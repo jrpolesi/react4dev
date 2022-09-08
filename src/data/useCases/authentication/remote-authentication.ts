@@ -11,10 +11,15 @@ import {
 export class RemoteAuthentication implements Authentication {
   constructor(
     private readonly url: string,
-    private readonly httpPostClient: HttpPostClient<AuthenticationParams, AccountModel>
+    private readonly httpPostClient: HttpPostClient<
+      AuthenticationParams,
+      AccountModel
+    >
   ) {}
 
-  async auth(authParams: AuthenticationParams): Promise<any> {
+  async auth(
+    authParams: AuthenticationParams
+  ): Promise<AccountModel | undefined> {
     const httpResponse = await this.httpPostClient.post({
       url: this.url,
       body: authParams
@@ -29,6 +34,8 @@ export class RemoteAuthentication implements Authentication {
         throw new UnexpectedError()
     }
 
-    return await Promise.resolve()
+    if (httpResponse.body) {
+      return httpResponse.body
+    }
   }
 }
