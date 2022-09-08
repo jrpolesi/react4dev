@@ -1,10 +1,12 @@
-/* eslint-disable @typescript-eslint/indent */
 import { HttpStatusCode } from '@/data/protocols/http/http-response'
 import { HttpPostClientSpy } from '@/data/test/mock-http-client'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import { AccountModel } from '@/domain/models/account-model'
-import { mockAuthentication } from '@/domain/test/mock-authentication'
+import {
+  mockAccountModel,
+  mockAuthentication
+} from '@/domain/test/mock-account'
 import { AuthenticationParams } from '@/domain/useCases/authentication'
 import { faker } from '@faker-js/faker'
 import { RemoteAuthentication } from './remote-authentication'
@@ -100,5 +102,22 @@ describe('RemoteAuthentication', () => {
     const promise = sut.auth(authParams)
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return an AccountModel with HttpPostClient return 200', async () => {
+    const httpBodyResult = mockAccountModel()
+
+    const authParams = mockAuthentication()
+
+    const { sut, httpPostClientSpy } = makeSut()
+
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpBodyResult
+    }
+
+    const account = await sut.auth(authParams)
+
+    await expect(account).toEqual(httpBodyResult)
   })
 })
