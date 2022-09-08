@@ -1,4 +1,4 @@
-import { HttpResponse } from '@/data/protocols/http/http-response'
+import { HttpResponse } from '@/data/protocols/http'
 
 export type HttpPostParams<TBody extends object = {}> = {
   url: string
