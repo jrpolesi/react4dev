@@ -1,6 +1,12 @@
 {
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "extends": [
     "standard-with-typescript",
+    "plugin:react/recommended",
     "prettier"
   ],
   "parserOptions": {
@@ -15,9 +21,12 @@
       2,
       "method"
     ],
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
   },
   "plugins": [
+    "react",
     "prettier"
   ]
 }
