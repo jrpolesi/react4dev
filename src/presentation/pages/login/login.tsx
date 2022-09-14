@@ -1,13 +1,16 @@
-import Footer from '@/presentation/components/footer/footer'
-import FormStatus from '@/presentation/components/form-status/form-status'
-import Input from '@/presentation/components/input/input'
-import Header from '@/presentation/components/login-header/login-header'
+import {
+  Footer,
+  FormStatus,
+  Input,
+  LoginHeader
+} from '@/presentation/components'
+
 import styles from './login-styles.scss'
 
 const Login: React.FC = () => {
   return (
     <div className={styles.login}>
-      <Header />
+      <LoginHeader />
       <form action="" className={styles.form}>
         <h2>Login</h2>
 

@@ -1,6 +1,6 @@
 import './global.scss'
 
-import Login from '@/presentation/pages/login/login'
+import { Login } from '@/presentation/pages'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
