@@ -1,5 +1,3 @@
-import '@/presentation/styles/global.scss'
-
 import { Login } from '@/presentation/pages'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
