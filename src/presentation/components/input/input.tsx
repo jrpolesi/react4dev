@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import { DetailedHTMLProps, FocusEvent, InputHTMLAttributes } from 'react'
 import styles from './input-styles.scss'
 
 type Props = DetailedHTMLProps<
@@ -7,9 +7,13 @@ type Props = DetailedHTMLProps<
 >
 
 const Input: React.FC<Props> = (props: Props) => {
+  const enableInput = (event: FocusEvent<HTMLInputElement>): void => {
+    event.target.readOnly = false
+  }
+
   return (
     <div className={styles.inputWrap}>
-      <input {...props} />
+      <input {...props} readOnly onFocus={enableInput} />
       <span className={styles.status}>🔴</span>
     </div>
   )
