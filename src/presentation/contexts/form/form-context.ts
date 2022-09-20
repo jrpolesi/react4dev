@@ -1,12 +1,9 @@
-import {
-  LoginErrorProps,
-  LoginStateProps
-} from '@/presentation/pages/login/login'
-import { createContext } from 'react'
+import { LoginStateProps } from '@/presentation/pages/login/login'
+import { createContext, Dispatch, SetStateAction } from 'react'
 
 type LoginContext = {
   state: LoginStateProps
-  errorState: LoginErrorProps
+  setState: Dispatch<SetStateAction<LoginStateProps>>
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

@@ -16,11 +16,18 @@ type Props = DetailedHTMLProps<
 }
 
 const Input: React.FC<Props> = (props: Props) => {
-  const { errorState } = useContext(Context)
-  const error = errorState[props.name as keyof LoginErrorProps]
+  const { state, setState } = useContext(Context)
+  const error = state[`${props.name}Error` as keyof LoginErrorProps]
 
   const enableInput = (event: FocusEvent<HTMLInputElement>): void => {
     event.target.readOnly = false
+  }
+
+  const handleChange = (event: FocusEvent<HTMLInputElement>): void => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value
+    })
   }
 
   const getStatus = (): string => {
@@ -33,7 +40,13 @@ const Input: React.FC<Props> = (props: Props) => {
 
   return (
     <div className={styles.inputWrap}>
-      <input {...props} readOnly onFocus={enableInput} />
+      <input
+        {...props}
+        data-testid={props.name}
+        readOnly
+        onFocus={enableInput}
+        onChange={handleChange}
+      />
       <span
         data-testid={`${props.name}-status`}
         title={getTitle()}
