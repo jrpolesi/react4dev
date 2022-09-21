@@ -14,8 +14,8 @@ export type LoginStateProps = {
   email: string
   password: string
   emailError: string
-  passwordError?: string
-  mainError?: string
+  passwordError: string
+  mainError: string
 }
 
 export type LoginErrorProps = {}
