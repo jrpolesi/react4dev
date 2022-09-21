@@ -50,7 +50,7 @@ describe('Login component', () => {
     expect(passwordStatus.textContent).toBe('🔴')
   })
 
-  test("'Should show email error if Validation fails", () => {
+  test('Should show email error if Validation fails', () => {
     const { sut, validationStub } = makeSut()
 
     const emailInput = sut.getByTestId('email')
@@ -62,7 +62,7 @@ describe('Login component', () => {
     expect(emailStatus.textContent).toBe('🔴')
   })
 
-  test("'Should show password error if Validation fails", () => {
+  test('Should show password error if Validation fails', () => {
     const { sut, validationStub } = makeSut()
 
     const passwordInput = sut.getByTestId('password')
@@ -76,7 +76,23 @@ describe('Login component', () => {
     expect(passwordStatus.textContent).toBe('🔴')
   })
 
-  test("'Should show valid password state if Validation succeeds", () => {
+  test('Should show valid email state if Validation succeeds', () => {
+    const { sut, validationStub } = makeSut()
+
+    validationStub.errorMessage = ''
+
+    const emailInput = sut.getByTestId('email')
+    fireEvent.input(emailInput, {
+      target: { value: faker.internet.email() }
+    })
+
+    const emailStatus = sut.getByTestId('email-status')
+
+    expect(emailStatus.title).toBe('Tudo certo!')
+    expect(emailStatus.textContent).toBe('🟢')
+  })
+
+  test('Should show valid password state if Validation succeeds', () => {
     const { sut, validationStub } = makeSut()
 
     validationStub.errorMessage = ''
