@@ -1,3 +1,4 @@
+import { Authentication } from '@/domain/useCases'
 import {
   Footer,
   FormStatus,
@@ -22,9 +23,10 @@ export type LoginErrorProps = {}
 
 export type Props = {
   validation?: Validation
+  authentication?: Authentication
 }
 
-const Login: React.FC<Props> = ({ validation }: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const [state, setState] = useState<LoginStateProps>({
     isLoading: false,
     email: '',
@@ -45,6 +47,17 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     setState({ ...state, isLoading: true })
+
+    async function authenticate(): Promise<void> {
+      await authentication?.auth({
+        email: state.email,
+        password: state.password
+      })
+
+      setState({ ...state, isLoading: false })
+    }
+
+    void authenticate()
   }
 
   return (
