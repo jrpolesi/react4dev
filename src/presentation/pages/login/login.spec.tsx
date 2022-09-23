@@ -10,6 +10,7 @@ import {
   RenderResult,
   waitFor
 } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
 type SutTypes = {
   sut: RenderResult
@@ -29,7 +30,9 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationStub.errorMessage = params?.validationError
 
   const sut = render(
-    <Login validation={validationStub} authentication={authenticationSpy} />
+    <BrowserRouter>
+      <Login validation={validationStub} authentication={authenticationSpy} />
+    </BrowserRouter>
   )
 
   return {
@@ -237,5 +240,16 @@ describe('Login component', () => {
         authenticationSpy.account.accessToken
       )
     })
+  })
+
+  test('Should go to sign up page', async () => {
+    const { sut } = makeSut()
+
+    const register = sut.getByTestId('signup')
+
+    fireEvent.click(register)
+
+    expect(history.length).toBe(2)
+    expect(location.pathname).toBe('/signup')
   })
 })
