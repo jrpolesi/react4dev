@@ -52,12 +52,16 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     setState({ ...state, isLoading: true })
 
     async function authenticate(): Promise<void> {
-      await authentication?.auth({
-        email: state.email,
-        password: state.password
-      })
-
-      setState({ ...state, isLoading: false })
+      try {
+        await authentication?.auth({
+          email: state.email,
+          password: state.password
+        })
+      } catch (error: any) {
+        setState({ ...state, mainError: error?.message })
+      } finally {
+        setState((state) => ({ ...state, isLoading: false }))
+      }
     }
 
     void authenticate()
