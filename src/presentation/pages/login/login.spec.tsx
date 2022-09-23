@@ -152,16 +152,19 @@ describe('Login component', () => {
     expect(submitButton.disabled).toBe(false)
   })
 
-  test('Should show spinner on submit', () => {
+  test('Should show spinner on submit', async () => {
     const { sut } = makeSut()
 
     simulateValidSubmit(sut)
 
     const spinner = sut.getByTestId('spinner')
-    expect(spinner).toBeTruthy()
+
+    await waitFor(() => {
+      expect(spinner).toBeTruthy()
+    })
   })
 
-  test('Should call Authentication with correct values', () => {
+  test('Should call Authentication with correct values', async () => {
     const email = faker.internet.email()
     const password = faker.internet.password()
 
@@ -169,10 +172,12 @@ describe('Login component', () => {
 
     simulateValidSubmit(sut, email, password)
 
-    expect(authenticationSpy.params).toEqual({ email, password })
+    await waitFor(() => {
+      expect(authenticationSpy.params).toEqual({ email, password })
+    })
   })
 
-  test('Should call Authentication only once', () => {
+  test('Should call Authentication only once', async () => {
     const email = faker.internet.email()
     const password = faker.internet.password()
 
@@ -182,10 +187,12 @@ describe('Login component', () => {
 
     simulateValidSubmit(sut, email, password)
 
-    expect(authenticationSpy.callsCount).toBe(1)
+    await waitFor(() => {
+      expect(authenticationSpy.callsCount).toBe(1)
+    })
   })
 
-  test('Should not call Authentication if form is invalid', () => {
+  test('Should not call Authentication if form is invalid', async () => {
     const validationError = faker.random.words()
     const { sut, authenticationSpy } = makeSut({ validationError })
 
