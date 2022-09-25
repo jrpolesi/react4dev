@@ -35,6 +35,8 @@ const makeSut = (params?: SutParams): SutTypes => {
     </BrowserRouter>
   )
 
+  history.replaceState({}, '', '/login')
+
   return {
     sut,
     authenticationSpy
@@ -240,6 +242,9 @@ describe('Login component', () => {
         authenticationSpy.account.accessToken
       )
     })
+
+    expect(history.length).toBe(1)
+    expect(location.pathname).toBe('/')
   })
 
   test('Should go to sign up page', async () => {
@@ -249,7 +254,9 @@ describe('Login component', () => {
 
     fireEvent.click(register)
 
-    expect(history.length).toBe(2)
-    expect(location.pathname).toBe('/signup')
+    await waitFor(() => {
+      expect(history.length).toBe(2)
+      expect(location.pathname).toBe('/signup')
+    })
   })
 })
