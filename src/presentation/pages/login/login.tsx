@@ -23,8 +23,8 @@ export type LoginStateProps = {
 export type LoginErrorProps = {}
 
 export type Props = {
-  validation?: Validation
-  authentication?: Authentication
+  validation: Validation
+  authentication: Authentication
 }
 
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {

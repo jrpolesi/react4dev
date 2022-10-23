@@ -10,7 +10,10 @@ export class RemoteAuthentication implements Authentication {
       AuthenticationParams,
       AccountModel
     >
-  ) {}
+  ) {
+    this.url = url
+    this.httpPostClient = httpPostClient
+  }
 
   async auth(
     authParams: AuthenticationParams
