@@ -1,20 +1,24 @@
 import Input from '@/presentation/components/input/input'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import Context from '@/presentation/contexts/form/form-context'
+
+const makeSut = (): RenderResult => {
+  return render(
+    <Context.Provider
+      value={
+        {
+          state: {}
+        } as any
+      }
+    >
+      <Input name="field" />
+    </Context.Provider>
+  )
+}
 
 describe('Input Component', () => {
   test('should begin with readOnly', () => {
-    const { getByTestId } = render(
-      <Context.Provider
-        value={
-          {
-            state: {}
-          } as any
-        }
-      >
-        <Input name="field" />
-      </Context.Provider>
-    )
+    const { getByTestId } = makeSut()
 
     const input = getByTestId('field') as HTMLInputElement
 
