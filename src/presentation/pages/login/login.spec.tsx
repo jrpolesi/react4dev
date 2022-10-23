@@ -1,6 +1,6 @@
 import 'jest-localstorage-mock'
 import { InvalidCredentialsError } from '@/domain/errors'
-import Login from '@/presentation/pages/login/login'
+import { Login } from '@/presentation/pages/'
 import { AuthenticationSpy, ValidationStub } from '@/presentation/test'
 import { faker } from '@faker-js/faker'
 import {
