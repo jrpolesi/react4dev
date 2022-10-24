@@ -9,7 +9,7 @@ export interface HttpPostClient<
   TBodyRequest extends object = {},
   TBodyResponse extends object = {}
 > {
-  post(
+  post: (
     params: HttpPostParams<TBodyRequest>
-  ): Promise<HttpResponse<TBodyResponse>>
+  ) => Promise<HttpResponse<TBodyResponse>>
 }

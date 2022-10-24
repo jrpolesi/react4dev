@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 type Props = {
-  makeLogin(): ReactElement
+  makeLogin: () => ReactElement
 }
 
 const Router: React.FC<Props> = ({ makeLogin }: Props) => {
