@@ -1,4 +1,4 @@
-import { Authentication } from '@/domain/useCases'
+import { Authentication, SaveAccessToken } from '@/domain/useCases'
 import {
   Footer,
   FormStatus,
@@ -25,9 +25,14 @@ export type LoginErrorProps = {}
 export type Props = {
   validation: Validation
   authentication: Authentication
+  saveAccessToken: SaveAccessToken
 }
 
-const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+const Login: React.FC<Props> = ({
+  validation,
+  authentication,
+  saveAccessToken
+}: Props) => {
   const [state, setState] = useState<LoginStateProps>({
     isLoading: false,
     email: '',
@@ -46,30 +51,26 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     })
   }, [state.email, state.password])
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault()
 
     if (state.isLoading || state.emailError || state.passwordError) return
 
-    setState({ ...state, isLoading: true })
+    try {
+      setState({ ...state, isLoading: true })
 
-    async function authenticate(): Promise<void> {
-      try {
-        const account = await authentication?.auth({
-          email: state.email,
-          password: state.password
-        })
+      const account = await authentication?.auth({
+        email: state.email,
+        password: state.password
+      })
 
-        localStorage.setItem('accessToken', account?.accessToken ?? '')
-        navigate('/', { replace: true })
-      } catch (error: any) {
-        setState({ ...state, mainError: error?.message })
-      } finally {
-        setState((state) => ({ ...state, isLoading: false }))
-      }
+      await saveAccessToken.save(account?.accessToken ?? '')
+      navigate('/', { replace: true })
+    } catch (error: any) {
+      setState({ ...state, mainError: error?.message, isLoading: false })
     }
-
-    void authenticate()
   }
 
   return (
@@ -79,7 +80,9 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
         <form
           data-testid="form"
           className={styles.form}
-          onSubmit={handleSubmit}
+          onSubmit={(e) => {
+            void handleSubmit(e)
+          }}
         >
           <h2>Login</h2>
 
