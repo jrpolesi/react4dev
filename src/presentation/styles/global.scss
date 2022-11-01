@@ -110,7 +110,8 @@ input {
 }
 
 input[type="password"],
-input[type="email"] {
+input[type="email"],
+input[type="text"] {
   border: 1px solid $primaryLight;
   border-radius: 4px;
   padding: 0px 40px 0px 8px;
