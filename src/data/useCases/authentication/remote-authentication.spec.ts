@@ -114,6 +114,6 @@ describe('RemoteAuthentication', () => {
 
     const account = await sut.auth(authParams)
 
-    await expect(account).toEqual(httpBodyResult)
+    expect(account).toEqual(httpBodyResult)
   })
 })
