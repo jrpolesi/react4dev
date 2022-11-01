@@ -85,4 +85,18 @@ describe('AddAccount', () => {
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
+
+  test('Should throw UnexpectedError if HttpPostClient returns 500', async () => {
+    const authParams = mockAddAccountParams()
+
+    const { sut, httpPostClientSpy } = makeSut()
+
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const promise = sut.add(authParams)
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
 })
