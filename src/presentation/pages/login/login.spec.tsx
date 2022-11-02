@@ -58,17 +58,10 @@ const simulateValidSubmit = (
   password = faker.internet.password()
 ): void => {
   Helper.populateField(sut, 'email', email)
-
   Helper.populateField(sut, 'password', password)
 
   const submitButton = sut.getByTestId('submit') as HTMLButtonElement
   fireEvent.click(submitButton)
-}
-
-const testElementExists = (sut: RenderResult, fieldName: string): void => {
-  const element = sut.getByTestId(fieldName)
-
-  expect(element).toBeTruthy()
 }
 
 const testElementText = (
@@ -148,7 +141,7 @@ describe('Login component', () => {
 
     simulateValidSubmit(sut)
     await waitFor(() => {
-      testElementExists(sut, 'spinner')
+      Helper.testElementExists(sut, 'spinner')
     })
   })
 
