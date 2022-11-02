@@ -6,7 +6,7 @@ import {
 } from '@/presentation/components'
 import Context from '@/presentation/contexts/form/form-context'
 import { Validation } from '@/presentation/protocols/validation'
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import styles from './signup-styles.scss'
 
 export type Props = {
@@ -38,11 +38,25 @@ const Signup: React.FC<Props> = ({ validation }: Props) => {
     })
   }, [state.name, state.email, state.password, state.passwordConfirmation])
 
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    event.preventDefault()
+
+    setState({ ...state, isLoading: true })
+  }
+
   return (
     <div className={styles.signup}>
       <LoginHeader />
       <Context.Provider value={{ state, setState } as any}>
-        <form className={styles.form}>
+        <form
+          data-testid="form"
+          className={styles.form}
+          onSubmit={(e) => {
+            void handleSubmit(e)
+          }}
+        >
           <h2>Criar Conta</h2>
 
           <Input type="text" name="name" placeholder="Digite seu nome" />
