@@ -177,4 +177,19 @@ describe('SignUp component', () => {
       })
     })
   })
+
+  test('Should call AddAccount only once', async () => {
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+
+    const { sut, addAccountSpy } = makeSut()
+
+    simulateValidSubmit(sut, email, password)
+
+    simulateValidSubmit(sut, email, password)
+
+    await waitFor(() => {
+      expect(addAccountSpy.callsCount).toBe(1)
+    })
+  })
 })
