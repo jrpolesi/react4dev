@@ -1,4 +1,4 @@
-import { AddAccount } from '@/domain/useCases'
+import { AddAccount, SaveAccessToken } from '@/domain/useCases'
 import {
   Footer,
   FormStatus,
@@ -8,14 +8,20 @@ import {
 import Context from '@/presentation/contexts/form/form-context'
 import { Validation } from '@/presentation/protocols/validation'
 import { FormEvent, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styles from './signup-styles.scss'
 
 export type Props = {
   validation?: Validation
   addAccount?: AddAccount
+  saveAccessToken?: SaveAccessToken
 }
 
-const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
+const Signup: React.FC<Props> = ({
+  validation,
+  addAccount,
+  saveAccessToken
+}: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     name: '',
@@ -28,6 +34,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
     passwordConfirmationError: 'Campo obrigatório',
     mainError: ''
   })
+  const navigate = useNavigate()
 
   useEffect(() => {
     setState({
@@ -57,12 +64,15 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
 
       setState({ ...state, isLoading: true })
 
-      await addAccount?.add({
+      const account = await addAccount?.add({
         name: state.name,
         email: state.email,
         password: state.password,
         passwordConfirmation: state.passwordConfirmation
       })
+
+      if (account) await saveAccessToken?.save(account.accessToken)
+      navigate('/', { replace: true })
     } catch (error: any) {
       setState({ ...state, isLoading: false, mainError: error?.message })
     }
