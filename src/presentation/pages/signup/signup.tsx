@@ -47,6 +47,8 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
 
     setState({ ...state, isLoading: true })
 
+    if (state.isLoading) return
+
     await addAccount?.add({
       name: state.name,
       email: state.email,
