@@ -218,9 +218,7 @@ describe('Login component', () => {
 
     const { sut, saveAccessTokenMock } = makeSut()
 
-    jest
-      .spyOn(saveAccessTokenMock, 'save')
-      .mockReturnValue(Promise.reject(error))
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
 
     simulateValidSubmit(sut)
 
