@@ -223,9 +223,9 @@ describe('Login component', () => {
   test('Should go to sign up page', async () => {
     const { sut } = makeSut()
 
-    const register = sut.getByTestId('signup')
+    const registerLink = sut.getByTestId('signup-link')
 
-    fireEvent.click(register)
+    fireEvent.click(registerLink)
 
     await waitFor(() => {
       expect(history.length).toBe(2)
