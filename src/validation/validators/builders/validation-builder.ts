@@ -1,4 +1,5 @@
 import { FieldValidation } from '@/validation/protocols/field-validation'
+import { CompareFieldsValidation } from '@/validation/validators/compare-fields/compare-fields-validation'
 import { EmailValidation } from '@/validation/validators/email/email-validation'
 import { MinLengthValidation } from '@/validation/validators/min-length/min-length-validation'
 import { RequiredFieldValidation } from '@/validation/validators/required-field/required-field-validation'
@@ -28,6 +29,13 @@ export class ValidationBuilder {
 
   min(minLength: number): ValidationBuilder {
     this.validations.push(new MinLengthValidation(this.fieldName, minLength))
+    return this
+  }
+
+  sameAs(fieldToCompare: string): ValidationBuilder {
+    this.validations.push(
+      new CompareFieldsValidation(this.fieldName, fieldToCompare)
+    )
     return this
   }
 
