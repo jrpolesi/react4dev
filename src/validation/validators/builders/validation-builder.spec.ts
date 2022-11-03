@@ -1,4 +1,5 @@
 import { ValidationBuilder as sut } from '@/validation/validators/builders/validation-builder'
+import { CompareFieldsValidation } from '@/validation/validators/compare-fields/compare-fields-validation'
 import { EmailValidation } from '@/validation/validators/email/email-validation'
 import { MinLengthValidation } from '@/validation/validators/min-length/min-length-validation'
 import { RequiredFieldValidation } from '@/validation/validators/required-field/required-field-validation'
@@ -24,6 +25,17 @@ describe('ValidationBuilder', () => {
     const validations = sut.field(fieldName).min(minLength).build()
 
     expect(validations).toEqual([new MinLengthValidation(fieldName, minLength)])
+  })
+
+  test('Should return CompareFieldsValidation', () => {
+    const fieldName = 'any_field'
+    const fieldNameToCompare = 'another_field'
+
+    const validations = sut.field(fieldName).sameAs(fieldNameToCompare).build()
+
+    expect(validations).toEqual([
+      new CompareFieldsValidation(fieldName, fieldNameToCompare)
+    ])
   })
 
   test('Should return a list of validations', () => {

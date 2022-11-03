@@ -6,7 +6,7 @@ export class RequiredFieldValidation implements FieldValidation {
     this.field = field
   }
 
-  validate(value: string): Error | null {
-    return value ? null : new RequiredFieldError()
+  validate(input: Record<string, any>): Error | null {
+    return input[this.field] ? null : new RequiredFieldError()
   }
 }

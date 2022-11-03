@@ -1,3 +1,6 @@
 export interface Validation {
-  validate: (fieldName: string, fieldValue: string) => string | undefined
+  validate: (
+    fieldName: string,
+    input: Record<string, any>
+  ) => string | undefined
 }
