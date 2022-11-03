@@ -3,7 +3,8 @@ import {
   Footer,
   FormStatus,
   Input,
-  LoginHeader
+  LoginHeader,
+  SubmitButton
 } from '@/presentation/components'
 import Context from '@/presentation/contexts/form/form-context'
 import { Validation } from '@/presentation/protocols/validation'
@@ -18,6 +19,7 @@ export type LoginStateProps = {
   emailError: string
   passwordError: string
   mainError: string
+  isFormInvalid: boolean
 }
 
 export type LoginErrorProps = {}
@@ -35,6 +37,7 @@ const Login: React.FC<Props> = ({
 }: Props) => {
   const [state, setState] = useState<LoginStateProps>({
     isLoading: false,
+    isFormInvalid: true,
     email: '',
     password: '',
     emailError: '',
@@ -44,10 +47,14 @@ const Login: React.FC<Props> = ({
   const navigate = useNavigate()
 
   useEffect(() => {
+    const emailError = validation?.validate('email', state.email) ?? ''
+    const passwordError = validation?.validate('password', state.password) ?? ''
+
     setState({
       ...state,
-      emailError: validation?.validate('email', state.email) ?? '',
-      passwordError: validation?.validate('password', state.password) ?? ''
+      emailError,
+      passwordError,
+      isFormInvalid: !!emailError || !!passwordError
     })
   }, [state.email, state.password])
 
@@ -56,7 +63,7 @@ const Login: React.FC<Props> = ({
   ): Promise<void> => {
     event.preventDefault()
 
-    if (state.isLoading || state.emailError || state.passwordError) return
+    if (state.isLoading || state.isFormInvalid) return
 
     try {
       setState({ ...state, isLoading: true })
@@ -94,15 +101,7 @@ const Login: React.FC<Props> = ({
             placeholder="Digite sua senha"
           />
 
-          <button
-            data-testid="submit"
-            disabled={!!state.emailError || !!state.passwordError}
-            className={styles.submit}
-            type="submit"
-          >
-            Entrar
-          </button>
-
+          <SubmitButton text="Entrar" />
           <Link data-testid="signup-link" to="/signup" className={styles.link}>
             Criar conta
           </Link>
