@@ -2,10 +2,14 @@ import * as Http from '@/main/test/cypress/support/login-mocks'
 import * as FormHelper from '@/main/test/cypress/support/form-helper'
 import { faker } from '@faker-js/faker'
 
-const simulateValidSubmit = (): void => {
+const populateFields = (): void => {
   cy.getByTestId('email').focus().type(faker.internet.email())
 
   cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+}
+
+const simulateValidSubmit = (): void => {
+  populateFields()
 
   cy.getByTestId('submit').click()
 }
@@ -117,9 +121,7 @@ describe('Login', () => {
   it('Should prevent multiple submits', () => {
     Http.mockOk()
 
-    cy.getByTestId('email').focus().type(faker.internet.email())
-
-    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+    populateFields()
 
     cy.getByTestId('submit').click().click()
 
