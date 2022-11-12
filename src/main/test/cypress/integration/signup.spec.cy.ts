@@ -100,4 +100,27 @@ describe('SignUp', () => {
 
     FormHelper.testUrl('/signup')
   })
+
+  it('Should present UnexpectedError if invalid data is returned', () => {
+    const password = faker.random.alphaNumeric(5)
+
+    Http.mockInvalidData()
+
+    cy.getByTestId('name').focus().type(faker.name.fullName())
+
+    cy.getByTestId('email').focus().type(faker.internet.email())
+
+    cy.getByTestId('password').focus().type(password)
+
+    cy.getByTestId('passwordConfirmation')
+      .focus()
+      .type(password)
+      .type('{enter}')
+
+    FormHelper.testMainError(
+      'Algo de errado aconteceu. Tente novamente em breve.'
+    )
+
+    FormHelper.testUrl('/signup')
+  })
 })
