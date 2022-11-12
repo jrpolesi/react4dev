@@ -128,14 +128,15 @@ describe('Login', () => {
       body: {
         invalidProperty: faker.random.words()
       },
-      delay: 50
+      delay: 100
     })
 
     cy.getByTestId('email').focus().type(faker.internet.email())
 
-    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
-
-    cy.getByTestId('submit').click()
+    cy.getByTestId('password')
+      .focus()
+      .type(faker.random.alphaNumeric(5))
+      .type('{enter}')
 
     cy.getByTestId('error-wrap')
       .getByTestId('spinner')
