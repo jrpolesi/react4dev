@@ -112,14 +112,8 @@ input {
 input[type="password"],
 input[type="email"],
 input[type="text"] {
-  border: 1px solid $primaryLight;
-  border-radius: 4px;
-  padding: 0px 40px 0px 8px;
-  line-height: 40px;
-
-  &:focus {
-    outline-color: $primaryLight;
-  }
+  border: none;
+  outline: none;
 }
 
 button {
@@ -127,7 +121,7 @@ button {
   border-radius: 8px;
   cursor: pointer;
   background-color: $primary;
-  line-height: 60px;
+  line-height: 50px;
   font-size: 16px;
   color: $white;
 
