@@ -15,10 +15,15 @@ const Input: React.FC<Props> = (props: Props) => {
   const error = state[`${props.name}Error` as keyof LoginErrorProps]
 
   return (
-    <div className={styles.inputWrap}>
+    <div
+      data-testid={`${props.name}-wrap`}
+      className={styles.inputWrap}
+      data-status={error ? 'invalid' : 'valid'}
+    >
       <input
         id={props.name}
         {...props}
+        title={error || null}
         placeholder=" "
         data-testid={props.name}
         readOnly
@@ -30,14 +35,13 @@ const Input: React.FC<Props> = (props: Props) => {
           })
         }
       />
-      <label htmlFor={props.id ?? props.name}>{props.placeholder}</label>
-      <span
-        data-testid={`${props.name}-status`}
-        title={error || 'Tudo certo!'}
-        className={styles.status}
+      <label
+        data-testid={`${props.name}-label`}
+        htmlFor={props.id ?? props.name}
+        title={error || null}
       >
-        {error ? '🔴' : '🟢'}
-      </span>
+        {props.placeholder}
+      </label>
     </div>
   )
 }
