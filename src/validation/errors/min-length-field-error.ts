@@ -1,6 +1,6 @@
 export class MinLengthFieldError extends Error {
   constructor() {
-    super(`valor inválido`)
+    super(`Valor inválido`)
     this.name = 'MinLengthFieldError'
   }
 }

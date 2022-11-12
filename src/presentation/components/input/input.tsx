@@ -1,11 +1,6 @@
 import Context from '@/presentation/contexts/form/form-context'
 import { LoginErrorProps } from '@/presentation/pages/login/login'
-import {
-  DetailedHTMLProps,
-  FocusEvent,
-  InputHTMLAttributes,
-  useContext
-} from 'react'
+import { DetailedHTMLProps, InputHTMLAttributes, useContext } from 'react'
 import styles from './input-styles.scss'
 
 type Props = DetailedHTMLProps<
@@ -19,41 +14,34 @@ const Input: React.FC<Props> = (props: Props) => {
   const { state, setState } = useContext(Context)
   const error = state[`${props.name}Error` as keyof LoginErrorProps]
 
-  const enableInput = (event: FocusEvent<HTMLInputElement>): void => {
-    event.target.readOnly = false
-  }
-
-  const handleChange = (event: FocusEvent<HTMLInputElement>): void => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.value
-    })
-  }
-
-  const getStatus = (): string => {
-    return error ? '🔴' : '🟢'
-  }
-
-  const getTitle = (): string => {
-    return error || 'Tudo certo!'
-  }
-
   return (
-    <div className={styles.inputWrap}>
+    <div
+      data-testid={`${props.name}-wrap`}
+      className={styles.inputWrap}
+      data-status={error ? 'invalid' : 'valid'}
+    >
       <input
+        id={props.name}
         {...props}
+        title={error || null}
+        placeholder=" "
         data-testid={props.name}
         readOnly
-        onFocus={enableInput}
-        onChange={handleChange}
+        onFocus={(event) => (event.target.readOnly = false)}
+        onChange={(event) =>
+          setState({
+            ...state,
+            [event.target.name]: event.target.value
+          })
+        }
       />
-      <span
-        data-testid={`${props.name}-status`}
-        title={getTitle()}
-        className={styles.status}
+      <label
+        data-testid={`${props.name}-label`}
+        htmlFor={props.id ?? props.name}
+        title={error || null}
       >
-        {getStatus()}
-      </span>
+        {props.placeholder}
+      </label>
     </div>
   )
 }
