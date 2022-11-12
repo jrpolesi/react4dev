@@ -9,6 +9,11 @@ export const mockEmailInUseError = (): void =>
 export const mockUnexpectedError = (): void =>
   Helper.mockUnexpectedError(URL_LOGIN_REGEXP, 'POST')
 
+export const mockOk = (): void =>
+  Helper.mockOk(URL_LOGIN_REGEXP, 'POST', {
+    accessToken: faker.random.words()
+  })
+
 export const mockInvalidData = (): void =>
   Helper.mockOk(URL_LOGIN_REGEXP, 'POST', {
     invalidProperty: faker.random.words()
