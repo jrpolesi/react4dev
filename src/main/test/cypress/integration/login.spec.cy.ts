@@ -55,7 +55,15 @@ describe('Login', () => {
     cy.getByTestId('error-wrap').should('not.have.descendants')
   })
 
-  it('Should present error if invalid credentials are provided', () => {
+  it('Should present InvalidCredentials on 401', () => {
+    cy.intercept('POST', /api\/login/, {
+      statusCode: 401,
+      body: {
+        error: faker.random.words()
+      },
+      delay: 50
+    })
+
     cy.getByTestId('email').focus().type(faker.internet.email())
 
     cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
@@ -79,10 +87,88 @@ describe('Login', () => {
     }
   })
 
-  it('Should save accessToken if valid credentials are provided', () => {
-    cy.getByTestId('email').focus().type('mango@gmail.com')
+  it('Should present UnexpectedError on 400', () => {
+    cy.intercept('POST', /api\/login/, {
+      statusCode: 400,
+      body: {
+        error: faker.random.words()
+      },
+      delay: 50
+    })
 
-    cy.getByTestId('password').focus().type('12345')
+    cy.getByTestId('email').focus().type(faker.internet.email())
+
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+
+    cy.getByTestId('submit').click()
+
+    cy.getByTestId('error-wrap')
+      .getByTestId('spinner')
+      .should('exist')
+      .getByTestId('main-error')
+      .should('not.exist')
+      .getByTestId('spinner')
+      .should('not.exist')
+      .getByTestId('main-error')
+      .should(
+        'contain.text',
+        'Algo de errado aconteceu. Tente novamente em breve.'
+      )
+
+    if (baseURL) {
+      cy.url().should('eq', `${baseURL}/login`)
+    } else {
+      throw new Error('Cypress baseUrl not found')
+    }
+  })
+
+  it('Should present UnexpectedError in invalid data is returned', () => {
+    cy.intercept('POST', /api\/login/, {
+      statusCode: 200,
+      body: {
+        invalidProperty: faker.random.words()
+      },
+      delay: 50
+    })
+
+    cy.getByTestId('email').focus().type(faker.internet.email())
+
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+
+    cy.getByTestId('submit').click()
+
+    cy.getByTestId('error-wrap')
+      .getByTestId('spinner')
+      .should('exist')
+      .getByTestId('main-error')
+      .should('not.exist')
+      .getByTestId('spinner')
+      .should('not.exist')
+      .getByTestId('main-error')
+      .should(
+        'contain.text',
+        'Algo de errado aconteceu. Tente novamente em breve.'
+      )
+
+    if (baseURL) {
+      cy.url().should('eq', `${baseURL}/login`)
+    } else {
+      throw new Error('Cypress baseUrl not found')
+    }
+  })
+
+  it('Should save accessToken if valid credentials are provided', () => {
+    cy.intercept('POST', /api\/login/, {
+      statusCode: 200,
+      body: {
+        accessToken: faker.random.words()
+      },
+      delay: 50
+    })
+
+    cy.getByTestId('email').focus().type(faker.internet.email())
+
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
 
     cy.getByTestId('submit').click()
 
