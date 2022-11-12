@@ -2,7 +2,7 @@ import * as FormHelper from '@/main/test/cypress/support/form-helper'
 import * as Http from '@/main/test/cypress/support/signup-mocks'
 import { faker } from '@faker-js/faker'
 
-const simulateValidSubmit = (): void => {
+const populateFields = (): void => {
   const password = faker.random.alphaNumeric(5)
 
   cy.getByTestId('name').focus().type(faker.name.fullName())
@@ -12,6 +12,10 @@ const simulateValidSubmit = (): void => {
   cy.getByTestId('password').focus().type(password)
 
   cy.getByTestId('passwordConfirmation').focus().type(password)
+}
+
+const simulateValidSubmit = (): void => {
+  populateFields()
 
   cy.getByTestId('submit').click()
 }
@@ -140,5 +144,15 @@ describe('SignUp', () => {
     FormHelper.testUrl('/')
 
     FormHelper.testLocalStorageItem('accessToken')
+  })
+
+  it('Should prevent multiple submits', () => {
+    Http.mockOk()
+
+    populateFields()
+
+    cy.getByTestId('submit').click().click()
+
+    FormHelper.testHttpCallsCount(1)
   })
 })
