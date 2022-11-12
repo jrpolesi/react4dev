@@ -2,6 +2,7 @@
   "editor.formatOnSave": true,
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "cSpell.words": [
+    "chainer",
     "signup"
   ]
 }
