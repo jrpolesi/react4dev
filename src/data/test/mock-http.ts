@@ -16,6 +16,10 @@ export const mockPostRequest = (): HttpPostParams => ({
   }
 })
 
+export const mockGetRequest = (): HttpGetParams => ({
+  url: faker.internet.url()
+})
+
 export class HttpPostClientSpy<
   TBodyRequest extends object,
   TBodyResponse extends object
