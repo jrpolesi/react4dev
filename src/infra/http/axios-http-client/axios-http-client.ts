@@ -24,9 +24,11 @@ export class AxiosHttpClient implements HttpPostClient, HttpGetClient {
   }
 
   async get(params: HttpGetParams): Promise<HttpResponse> {
-    await axios.get(params.url)
+    const axiosResponse = await axios.get(params.url)
 
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return {} as HttpResponse
+    return {
+      statusCode: axiosResponse.status,
+      body: axiosResponse.data
+    }
   }
 }
