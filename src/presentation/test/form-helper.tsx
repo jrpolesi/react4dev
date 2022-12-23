@@ -26,10 +26,18 @@ export const testStatusForField = (
   fieldName: string,
   validationError?: string
 ): void => {
-  const fieldStatus = sut.getByTestId(`${fieldName}-status`)
+  const wrap = sut.getByTestId(`${fieldName}-wrap`)
+  const field = sut.getByTestId(fieldName)
+  const label = sut.getByTestId(`${fieldName}-label`)
 
-  expect(fieldStatus.title).toBe(validationError ?? 'Tudo certo!')
-  expect(fieldStatus.textContent).toBe(validationError ? '🔴' : '🟢')
+  expect(wrap.getAttribute('data-status')).toBe(
+    validationError ? 'invalid' : 'valid'
+  )
+
+  const title = validationError || undefined
+
+  expect(field.title || undefined).toBe(title)
+  expect(label.title || undefined).toBe(title)
 }
 
 export const populateField = (

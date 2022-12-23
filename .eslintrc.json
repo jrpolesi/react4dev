@@ -7,13 +7,19 @@
   "extends": [
     "standard-with-typescript",
     "plugin:react/recommended",
+    "plugin:cypress/recommended",
+    "plugin:json/recommended",
     "plugin:react/jsx-runtime",
     "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": [
+      "./tsconfig.json",
+      "./src/main/test/cypress/tsconfig.json"
+    ]
   },
   "rules": {
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/space-before-function-paren": "off",
@@ -24,6 +30,7 @@
   },
   "plugins": [
     "react",
-    "prettier"
+    "prettier",
+    "cypress"
   ]
 }
