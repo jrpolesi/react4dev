@@ -1,19 +1,10 @@
-import { Footer, Logo } from '@/presentation/components'
+import { Footer, Header } from '@/presentation/components'
 import styles from './survey-list-styles.scss'
 
 const SurveyList: React.FC = () => {
   return (
     <div className={styles.surveyListWrap}>
-      <header className={styles.headerWrap}>
-        <div className={styles.headerContent}>
-          <Logo />
-
-          <div className={styles.logoutWrap}>
-            <span>Rodrigo</span>
-            <a href="#">Sair</a>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <div className={styles.contentWrap}>
         <h2>Enquetes</h2>
