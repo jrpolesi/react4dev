@@ -14,7 +14,15 @@ export class AxiosHttpClient implements HttpPostClient, HttpGetClient {
     try {
       axiosResponse = await axios.post(params.url, params.body)
     } catch (error: any) {
-      axiosResponse = error.response
+      if (!error.response) {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        axiosResponse = {
+          status: 500,
+          data: undefined
+        } as AxiosResponse
+      } else {
+        axiosResponse = error.response
+      }
     }
 
     return this.adapt(axiosResponse)

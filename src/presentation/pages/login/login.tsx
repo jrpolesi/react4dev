@@ -1,4 +1,4 @@
-import { Authentication, SaveAccessToken } from '@/domain/useCases'
+import { Authentication, UpdateCurrentAccount } from '@/domain/useCases'
 import {
   Footer,
   FormStatus,
@@ -27,13 +27,13 @@ export type LoginErrorProps = {}
 export type Props = {
   validation: Validation
   authentication: Authentication
-  saveAccessToken: SaveAccessToken
+  UpdateCurrentAccount: UpdateCurrentAccount
 }
 
 const Login: React.FC<Props> = ({
   validation,
   authentication,
-  saveAccessToken
+  UpdateCurrentAccount
 }: Props) => {
   const [state, setState] = useState<LoginStateProps>({
     isLoading: false,
@@ -75,8 +75,9 @@ const Login: React.FC<Props> = ({
         email: state.email,
         password: state.password
       })
-
-      await saveAccessToken.save(account?.accessToken ?? '')
+      if (account) {
+        await UpdateCurrentAccount.save(account)
+      }
       navigate('/', { replace: true })
     } catch (error: any) {
       setState({ ...state, mainError: error?.message, isLoading: false })

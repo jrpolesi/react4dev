@@ -1,5 +1,5 @@
-import * as Http from '@/main/test/cypress/support/login-mocks'
 import * as FormHelper from '@/main/test/cypress/support/form-helper'
+import * as Http from '@/main/test/cypress/support/login-mocks'
 import { faker } from '@faker-js/faker'
 
 const populateFields = (): void => {
@@ -100,7 +100,7 @@ describe('Login', () => {
     FormHelper.testUrl('/login')
   })
 
-  it('Should save accessToken if valid credentials are provided', () => {
+  it('Should save account if valid credentials are provided', () => {
     Http.mockOk()
 
     simulateValidSubmit()
@@ -115,7 +115,7 @@ describe('Login', () => {
 
     FormHelper.testUrl('/')
 
-    FormHelper.testLocalStorageItem('accessToken')
+    FormHelper.testLocalStorageItem('account')
   })
 
   it('Should prevent multiple submits', () => {

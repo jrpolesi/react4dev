@@ -11,7 +11,8 @@ export const mockUnexpectedError = (): void =>
 
 export const mockOk = (): void =>
   Helper.mockOk(URL_LOGIN_REGEXP, 'POST', {
-    accessToken: faker.random.words()
+    accessToken: faker.random.words(),
+    name: faker.name.fullName()
   })
 
 export const mockInvalidData = (): void =>
