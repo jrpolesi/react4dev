@@ -24,6 +24,76 @@ const SurveyList: React.FC = () => {
             </div>
             <footer>Ver Resultado</footer>
           </li>
+          <li>
+            <div className={styles.surveyContent}>
+              <Icon className={styles.iconWrap} iconName={IconName.thumbDown} />
+
+              <time>
+                <span className={styles.day}>22</span>
+                <span className={styles.month}>03</span>
+                <span className={styles.year}>2020</span>
+              </time>
+
+              <p>Qual o seu framework web favorito?</p>
+            </div>
+            <footer>Ver Resultado</footer>
+          </li>
+          <li>
+            <div className={styles.surveyContent}>
+              <Icon className={styles.iconWrap} iconName={IconName.thumbDown} />
+
+              <time>
+                <span className={styles.day}>22</span>
+                <span className={styles.month}>03</span>
+                <span className={styles.year}>2020</span>
+              </time>
+
+              <p>Qual o seu framework web favorito?</p>
+            </div>
+            <footer>Ver Resultado</footer>
+          </li>
+          <li>
+            <div className={styles.surveyContent}>
+              <Icon className={styles.iconWrap} iconName={IconName.thumbDown} />
+
+              <time>
+                <span className={styles.day}>22</span>
+                <span className={styles.month}>03</span>
+                <span className={styles.year}>2020</span>
+              </time>
+
+              <p>Qual o seu framework web favorito?</p>
+            </div>
+            <footer>Ver Resultado</footer>
+          </li>
+          <li>
+            <div className={styles.surveyContent}>
+              <Icon className={styles.iconWrap} iconName={IconName.thumbDown} />
+
+              <time>
+                <span className={styles.day}>22</span>
+                <span className={styles.month}>03</span>
+                <span className={styles.year}>2020</span>
+              </time>
+
+              <p>Qual o seu framework web favorito?</p>
+            </div>
+            <footer>Ver Resultado</footer>
+          </li>
+          <li>
+            <div className={styles.surveyContent}>
+              <Icon className={styles.iconWrap} iconName={IconName.thumbDown} />
+
+              <time>
+                <span className={styles.day}>22</span>
+                <span className={styles.month}>03</span>
+                <span className={styles.year}>2020</span>
+              </time>
+
+              <p>Qual o seu framework web favorito?</p>
+            </div>
+            <footer>Ver Resultado</footer>
+          </li>
         </ul>
       </div>
 

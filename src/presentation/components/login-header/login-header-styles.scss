@@ -1,6 +1,6 @@
 @import "../../styles/colors.scss";
 
-.header {
+.headerWrap {
   flex-direction: column;
   align-items: center;
   display: flex;
@@ -15,5 +15,11 @@
     margin: 16px 0px 40px;
     font-weight: 600;
     color: $white;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .headerWrap {
+    border-top-width: 20px;
   }
 }
