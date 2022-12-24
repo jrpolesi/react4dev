@@ -1,4 +1,4 @@
-import { Authentication, UpdateCurrentAccount } from '@/domain/useCases'
+import { Authentication } from '@/domain/useCases'
 import {
   Footer,
   FormStatus,
@@ -6,9 +6,9 @@ import {
   LoginHeader,
   SubmitButton
 } from '@/presentation/components'
-import { FormContext } from '@/presentation/contexts'
+import { ApiContext, FormContext } from '@/presentation/contexts'
 import { Validation } from '@/presentation/protocols/validation'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './login-styles.scss'
 
@@ -27,14 +27,10 @@ export type LoginErrorProps = {}
 export type Props = {
   validation: Validation
   authentication: Authentication
-  UpdateCurrentAccount: UpdateCurrentAccount
 }
 
-const Login: React.FC<Props> = ({
-  validation,
-  authentication,
-  UpdateCurrentAccount
-}: Props) => {
+const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+  const { setCurrentAccount } = useContext(ApiContext)
   const [state, setState] = useState<LoginStateProps>({
     isLoading: false,
     isFormInvalid: true,
@@ -75,9 +71,11 @@ const Login: React.FC<Props> = ({
         email: state.email,
         password: state.password
       })
+
       if (account) {
-        await UpdateCurrentAccount.save(account)
+        setCurrentAccount?.(account)
       }
+
       navigate('/', { replace: true })
     } catch (error: any) {
       setState({ ...state, mainError: error?.message, isLoading: false })
