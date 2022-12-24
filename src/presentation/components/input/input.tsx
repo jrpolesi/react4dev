@@ -1,4 +1,4 @@
-import Context from '@/presentation/contexts/form/form-context'
+import { FormContext } from '@/presentation/contexts'
 import { LoginErrorProps } from '@/presentation/pages/login/login'
 import { DetailedHTMLProps, InputHTMLAttributes, useContext } from 'react'
 import styles from './input-styles.scss'
@@ -11,7 +11,7 @@ type Props = DetailedHTMLProps<
 }
 
 const Input: React.FC<Props> = (props: Props) => {
-  const { state, setState } = useContext(Context)
+  const { state, setState } = useContext(FormContext)
   const error = state[`${props.name}Error` as keyof LoginErrorProps]
 
   return (

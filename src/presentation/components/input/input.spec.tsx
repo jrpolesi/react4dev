@@ -1,11 +1,11 @@
 import Input from '@/presentation/components/input/input'
-import { fireEvent, render, RenderResult } from '@testing-library/react'
-import Context from '@/presentation/contexts/form/form-context'
+import { FormContext } from '@/presentation/contexts'
 import { faker } from '@faker-js/faker'
+import { fireEvent, render, RenderResult } from '@testing-library/react'
 
 const makeSut = (fieldName: string): RenderResult => {
   return render(
-    <Context.Provider
+    <FormContext.Provider
       value={
         {
           state: {}
@@ -13,7 +13,7 @@ const makeSut = (fieldName: string): RenderResult => {
       }
     >
       <Input name={fieldName} />
-    </Context.Provider>
+    </FormContext.Provider>
   )
 }
 

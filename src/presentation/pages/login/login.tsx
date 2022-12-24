@@ -6,7 +6,7 @@ import {
   LoginHeader,
   SubmitButton
 } from '@/presentation/components'
-import Context from '@/presentation/contexts/form/form-context'
+import { FormContext } from '@/presentation/contexts'
 import { Validation } from '@/presentation/protocols/validation'
 import { FormEvent, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -87,7 +87,7 @@ const Login: React.FC<Props> = ({
   return (
     <div className={styles.loginWrap}>
       <LoginHeader />
-      <Context.Provider value={{ state, setState }}>
+      <FormContext.Provider value={{ state, setState }}>
         <form
           data-testid="form"
           className={styles.form}
@@ -112,7 +112,7 @@ const Login: React.FC<Props> = ({
 
           <FormStatus />
         </form>
-      </Context.Provider>
+      </FormContext.Provider>
 
       <Footer />
     </div>
