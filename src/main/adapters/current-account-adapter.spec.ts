@@ -1,3 +1,5 @@
+import { UnexpectedError } from '@/domain/errors'
+import { AccountModel } from '@/domain/models'
 import { mockAccountModel } from '@/domain/test'
 import { LocalStorageAdapter } from '@/infra/cache/local-storage-adapter'
 import { setCurrentAccountAdapter } from '@/main/adapters/current-account-adapter'
@@ -13,5 +15,11 @@ describe('CurrentAccountAdapter', () => {
     setCurrentAccountAdapter(account)
 
     expect(setSpy).toHaveBeenCalledWith('account', account)
+  })
+
+  test('Should throw UnexpectedError', () => {
+    expect(() => {
+      setCurrentAccountAdapter(undefined as unknown as AccountModel)
+    }).toThrow(new UnexpectedError())
   })
 })
