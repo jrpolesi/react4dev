@@ -1,4 +1,4 @@
-import styles from './survey-item-empty.scss'
+import styles from './survey-item-empty-styles.scss'
 
 const SurveyItemEmpty: React.FC = () => {
   return (
