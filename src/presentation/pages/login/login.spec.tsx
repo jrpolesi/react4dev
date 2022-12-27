@@ -56,9 +56,9 @@ describe('Login component', () => {
 
     makeSut({ validationError })
 
-    Helper.testChildCount('error-wrap', 0)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
 
-    Helper.testButtonIsDisabled('submit', true)
+    expect(screen.getByTestId('submit')).toBeDisabled()
 
     Helper.testStatusForField('email', validationError)
 
@@ -108,7 +108,7 @@ describe('Login component', () => {
 
     Helper.populateField('password')
 
-    Helper.testButtonIsDisabled('submit', false)
+    expect(screen.getByTestId('submit')).toBeEnabled()
   })
 
   test('Should show spinner on submit', async () => {
@@ -116,7 +116,7 @@ describe('Login component', () => {
 
     simulateValidSubmit()
     await waitFor(() => {
-      Helper.testElementExists('spinner')
+      expect(screen.queryByTestId('spinner')).toBeInTheDocument()
     })
   })
 
@@ -167,10 +167,10 @@ describe('Login component', () => {
     simulateValidSubmit()
 
     await waitFor(() => {
-      Helper.testElementText('main-error', error.message)
+      expect(screen.getByTestId('main-error')).toHaveTextContent(error.message)
     })
 
-    Helper.testChildCount('error-wrap', 1)
+    expect(screen.getByTestId('error-wrap').children).toHaveLength(1)
   })
 
   test('Should call UpdateCurrentAccount on success', async () => {
