@@ -23,6 +23,7 @@
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/space-before-function-paren": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/brace-style": "off",
     "prettier/prettier": "error",
     "react/jsx-uses-react": "error",
