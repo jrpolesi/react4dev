@@ -31,7 +31,7 @@ describe('LocalStorageAdapter', () => {
 
     const key = faker.database.column()
 
-    sut.set(key, undefined as any)
+    sut.set(key, undefined)
 
     expect(localStorage.removeItem).toHaveBeenCalledWith(key)
   })
