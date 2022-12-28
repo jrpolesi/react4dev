@@ -2,13 +2,18 @@ import { UnexpectedError } from '@/domain/errors'
 import { LoadSurveyListSpy } from '@/domain/test'
 import SurveyList from '@/presentation/pages/survey-list/survey-list'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
 type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy
 }
 
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
-  render(<SurveyList loadSurveyList={loadSurveyListSpy} />)
+  render(
+    <BrowserRouter>
+      <SurveyList loadSurveyList={loadSurveyListSpy} />
+    </BrowserRouter>
+  )
 
   return { loadSurveyListSpy }
 }
