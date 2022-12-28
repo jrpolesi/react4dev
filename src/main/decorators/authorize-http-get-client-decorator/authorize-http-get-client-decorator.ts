@@ -5,7 +5,9 @@ import {
   HttpResponse
 } from '@/data/protocols/http'
 
-export class AuthorizeHttpGetClientDecorator implements HttpGetClient {
+export class AuthorizeHttpGetClientDecorator<T extends object = {}>
+  implements HttpGetClient<T>
+{
   constructor(
     private readonly getStorage: GetStorage,
     private readonly httpGetClient: HttpGetClient
@@ -13,6 +15,7 @@ export class AuthorizeHttpGetClientDecorator implements HttpGetClient {
 
   async get(params: HttpGetParams): Promise<HttpResponse> {
     const account = this.getStorage.get('account')
+
     if (account?.accessToken) {
       Object.assign(params, {
         headers: {
