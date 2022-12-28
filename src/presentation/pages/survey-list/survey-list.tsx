@@ -16,12 +16,14 @@ type Props = {
 export type SurveyState = {
   surveys: SurveyModel[]
   error: string
+  reload: boolean
 }
 
 const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
   const [state, setState] = useState<SurveyState>({
     surveys: [],
-    error: ''
+    error: '',
+    reload: false
   })
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
       .catch((error) =>
         setState((state) => ({ ...state, error: error.message }))
       )
-  }, [])
+  }, [state.reload])
 
   return (
     <div className={styles.surveyListWrap}>
