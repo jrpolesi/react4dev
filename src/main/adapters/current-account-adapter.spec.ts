@@ -1,5 +1,4 @@
 import { UnexpectedError } from '@/domain/errors'
-import { AccountModel } from '@/domain/models'
 import { mockAccountModel } from '@/domain/test'
 import { LocalStorageAdapter } from '@/infra/cache/local-storage-adapter'
 import {
@@ -22,7 +21,7 @@ describe('CurrentAccountAdapter', () => {
 
   test('Should throw UnexpectedError', () => {
     expect(() => {
-      setCurrentAccountAdapter(undefined as unknown as AccountModel)
+      setCurrentAccountAdapter(undefined as any)
     }).toThrow(new UnexpectedError())
   })
 

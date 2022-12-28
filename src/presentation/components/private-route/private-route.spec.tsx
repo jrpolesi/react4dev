@@ -1,4 +1,3 @@
-import { AccountModel } from '@/domain/models'
 import { mockAccountModel } from '@/domain/test'
 import PrivateRoute from '@/presentation/components/private-route/private-route'
 import { ApiContext } from '@/presentation/contexts'
@@ -26,7 +25,7 @@ describe('PrivateRoute', () => {
   afterEach(() => history.replaceState({}, '', '/'))
 
   test('Should redirect to /login if token is empty', () => {
-    makeSut(null as unknown as AccountModel)
+    makeSut(null as any)
 
     expect(location.pathname).toBe('/login')
   })

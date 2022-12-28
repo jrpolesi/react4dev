@@ -1,15 +1,16 @@
 import { InvalidCredentialsError } from '@/domain/errors'
-import { AccountModel } from '@/domain/models'
+import { AuthenticationSpy } from '@/domain/test'
+import { Authentication } from '@/domain/useCases'
 import { ApiContext } from '@/presentation/contexts'
 import { Login } from '@/presentation/pages/'
-import { AuthenticationSpy, Helper, ValidationStub } from '@/presentation/test'
+import { Helper, ValidationStub } from '@/presentation/test'
 import { faker } from '@faker-js/faker'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy
-  setCurrentAccountMock: (account: AccountModel) => void
+  setCurrentAccountMock: (account: Authentication.Model) => void
 }
 
 type SutParams = {

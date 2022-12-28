@@ -1,21 +1,23 @@
 import { HttpStatusCode } from '@/data/protocols/http'
 import { HttpPostClientSpy } from '@/data/test'
 import { EmailInUseError, UnexpectedError } from '@/domain/errors'
-import { AccountModel } from '@/domain/models'
-import { mockAccountModel, mockAddAccountParams } from '@/domain/test'
-import { AddAccountParams } from '@/domain/useCases'
+import { mockAddAccountModel, mockAddAccountParams } from '@/domain/test'
+import { AddAccount } from '@/domain/useCases'
 import { faker } from '@faker-js/faker'
 import { RemoteAddAccount } from './remote-add-account'
 
 type SutTypes = {
   sut: RemoteAddAccount
-  httpPostClientSpy: HttpPostClientSpy<AddAccountParams, AccountModel>
+  httpPostClientSpy: HttpPostClientSpy<
+    AddAccount.Params,
+    RemoteAddAccount.Model
+  >
 }
 
 const makeSut = (url: string = faker.internet.url()): SutTypes => {
   const httpPostClientSpy = new HttpPostClientSpy<
-    AddAccountParams,
-    AccountModel
+    AddAccount.Params,
+    AddAccount.Model
   >()
 
   const sut = new RemoteAddAccount(url, httpPostClientSpy)
@@ -100,8 +102,8 @@ describe('AddAccount', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  test('Should return an AccountModel with HttpPostClient return 200', async () => {
-    const httpBodyResult = mockAccountModel()
+  test('Should return an AddAccount.Model with HttpPostClient return 200', async () => {
+    const httpBodyResult = mockAddAccountModel()
 
     const authParams = mockAddAccountParams()
 

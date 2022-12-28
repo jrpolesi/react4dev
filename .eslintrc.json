@@ -25,6 +25,7 @@
     "@typescript-eslint/space-before-function-paren": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/brace-style": "off",
+    "@typescript-eslint/no-namespace": "off",
     "prettier/prettier": "error",
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error"

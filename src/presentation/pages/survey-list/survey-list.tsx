@@ -1,4 +1,3 @@
-import { SurveyModel } from '@/domain/models'
 import { LoadSurveyList } from '@/domain/useCases'
 import { Footer, Header } from '@/presentation/components'
 import {
@@ -14,7 +13,7 @@ type Props = {
 }
 
 export type SurveyState = {
-  surveys: SurveyModel[]
+  surveys: LoadSurveyList.Model[]
   error: string
   reload: boolean
 }
