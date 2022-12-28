@@ -62,6 +62,22 @@ describe('AxiosHttpClient', () => {
     })
   })
 
+  test("Should return correct error on axios.post if error don't has a response", async () => {
+    const request = mockPostRequest()
+
+    const { sut, mockedAxios } = makeSut()
+
+    mockedAxios.post.mockRejectedValueOnce({
+      response: undefined
+    })
+
+    const promise = sut.post(request)
+
+    const mockedAxiosPromise = mockedAxios.post.mock.results[0].value
+
+    expect(promise).toEqual(mockedAxiosPromise)
+  })
+
   describe('post', () => {
     test('Should call axios.get with correct values', async () => {
       const request = mockGetRequest()
@@ -95,6 +111,22 @@ describe('AxiosHttpClient', () => {
 
       mockedAxios.get.mockRejectedValueOnce({
         response: mockHttpResponse()
+      })
+
+      const promise = sut.get(request)
+
+      const mockedAxiosPromise = mockedAxios.get.mock.results[0].value
+
+      expect(promise).toEqual(mockedAxiosPromise)
+    })
+
+    test("Should return correct error on axios.get if error don't has a response", async () => {
+      const request = mockGetRequest()
+
+      const { sut, mockedAxios } = makeSut()
+
+      mockedAxios.get.mockRejectedValueOnce({
+        response: undefined
       })
 
       const promise = sut.get(request)
