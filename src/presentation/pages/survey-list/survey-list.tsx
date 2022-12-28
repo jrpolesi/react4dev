@@ -2,8 +2,9 @@ import { SurveyModel } from '@/domain/models'
 import { LoadSurveyList } from '@/domain/useCases'
 import { Footer, Header } from '@/presentation/components'
 import {
-  SurveyItem,
-  SurveyItemEmpty
+  Error,
+  SurveyContext,
+  SurveyListItem
 } from '@/presentation/pages/survey-list/components'
 import { useEffect, useState } from 'react'
 import styles from './survey-list-styles.scss'
@@ -12,9 +13,14 @@ type Props = {
   loadSurveyList: LoadSurveyList
 }
 
+export type SurveyState = {
+  surveys: SurveyModel[]
+  error: string
+}
+
 const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
-  const [state, setState] = useState({
-    surveys: [] as SurveyModel[],
+  const [state, setState] = useState<SurveyState>({
+    surveys: [],
     error: ''
   })
 
@@ -33,22 +39,9 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
 
       <div className={styles.contentWrap}>
         <h2>Enquetes</h2>
-        {state.error ? (
-          <div data-testid="error">
-            <span>{state.error}</span>
-            <button>Recarregar</button>
-          </div>
-        ) : (
-          <ul data-testid="survey-list">
-            {state.surveys.length ? (
-              state.surveys.map((survey) => (
-                <SurveyItem key={survey.id} survey={survey} />
-              ))
-            ) : (
-              <SurveyItemEmpty />
-            )}
-          </ul>
-        )}
+        <SurveyContext.Provider value={{ state, setState }}>
+          {state.error ? <Error /> : <SurveyListItem />}
+        </SurveyContext.Provider>
       </div>
 
       <Footer />
