@@ -12,9 +12,13 @@ export class AuthorizeHttpGetClientDecorator implements HttpGetClient {
   ) {}
 
   async get(params: HttpGetParams): Promise<HttpResponse> {
-    this.getStorage.get('account')
-    await this.httpGetClient.get(params)
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return await Promise.resolve({} as HttpResponse)
+    const account = this.getStorage.get('account')
+    if (account?.accessToken) {
+      Object.assign(params, {
+        headers: { 'x-access-token': account.accessToken }
+      })
+    }
+
+    return await this.httpGetClient.get(params)
   }
 }
