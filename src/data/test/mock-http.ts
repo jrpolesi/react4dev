@@ -46,12 +46,15 @@ export class HttpGetClientSpy<TBodyResponse extends object>
   implements HttpGetClient<TBodyResponse>
 {
   url: string = ''
+  headers?: any
   response: HttpResponse<TBodyResponse> = {
     statusCode: HttpStatusCode.ok
   }
 
   async get(params: HttpGetParams): Promise<HttpResponse<TBodyResponse>> {
     this.url = params.url
+    this.headers = params.headers
+
     return await Promise.resolve(this.response)
   }
 }
