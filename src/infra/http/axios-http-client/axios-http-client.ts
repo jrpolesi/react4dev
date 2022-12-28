@@ -32,7 +32,7 @@ export class AxiosHttpClient implements HttpPostClient, HttpGetClient {
     let axiosResponse: AxiosResponse
 
     try {
-      axiosResponse = await axios.get(params.url)
+      axiosResponse = await axios.get(params.url, { headers: params.headers })
     } catch (error: any) {
       if (!error.response) {
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
