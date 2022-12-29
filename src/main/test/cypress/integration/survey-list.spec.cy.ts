@@ -20,4 +20,12 @@ describe('SurveyList', () => {
       'Algo de errado aconteceu. Tente novamente em breve.'
     )
   })
+
+  it('Should logout on AccessDeniedError', () => {
+    Http.mockAccessDeniedError()
+
+    cy.visit('')
+
+    Helper.testUrl('/login')
+  })
 })
