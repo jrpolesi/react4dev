@@ -25,12 +25,10 @@ describe('RequiredFieldValidation', () => {
   })
 
   test('Should return falsy if field does not exists in schema', () => {
-    const field = faker.database.column()
-
-    const sut = makeSut(field)
+    const sut = makeSut('any_field')
 
     const error = sut.validate({
-      [faker.database.column()]: faker.random.alphaNumeric(5)
+      invalidField: faker.random.alphaNumeric(5)
     })
     expect(error).toBeFalsy()
   })
