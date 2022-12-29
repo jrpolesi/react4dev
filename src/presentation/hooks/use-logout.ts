@@ -11,7 +11,7 @@ export const useLogout = (): ResultType => {
   const { setCurrentAccount } = useContext(ApiContext)
 
   return (): void => {
-    setCurrentAccount?.(undefined)
+    setCurrentAccount(undefined)
     navigate('/login')
   }
 }

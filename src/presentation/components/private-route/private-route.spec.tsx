@@ -10,7 +10,8 @@ const makeSut = (account = mockAccountModel()): void => {
     <BrowserRouter>
       <ApiContext.Provider
         value={{
-          getCurrentAccount: () => account
+          getCurrentAccount: () => account,
+          setCurrentAccount: jest.fn()
         }}
       >
         <Routes>

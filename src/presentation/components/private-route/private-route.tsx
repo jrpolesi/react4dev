@@ -9,7 +9,7 @@ type Props = {
 const PrivateRoute: React.FC<Props> = ({ component }: Props) => {
   const { getCurrentAccount } = useContext(ApiContext)
 
-  const hasToken = getCurrentAccount?.()?.accessToken
+  const hasToken = getCurrentAccount()?.accessToken
 
   return hasToken ? component : <Navigate to="/login" />
 }

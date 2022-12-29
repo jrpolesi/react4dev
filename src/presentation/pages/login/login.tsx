@@ -75,7 +75,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
       })
 
       if (account) {
-        setCurrentAccount?.(account)
+        setCurrentAccount(account)
       }
 
       navigate('/', { replace: true })

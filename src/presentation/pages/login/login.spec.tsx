@@ -25,7 +25,12 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationStub.errorMessage = params?.validationError
 
   render(
-    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+    <ApiContext.Provider
+      value={{
+        setCurrentAccount: setCurrentAccountMock,
+        getCurrentAccount: jest.fn()
+      }}
+    >
       <BrowserRouter>
         <Login validation={validationStub} authentication={authenticationSpy} />
       </BrowserRouter>

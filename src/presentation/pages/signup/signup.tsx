@@ -80,7 +80,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
       })
 
       if (account) {
-        setCurrentAccount?.(account)
+        setCurrentAccount(account)
       }
 
       navigate('/', { replace: true })
