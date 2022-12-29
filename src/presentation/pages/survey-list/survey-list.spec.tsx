@@ -1,21 +1,28 @@
-import { UnexpectedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
+import { AccountModel } from '@/domain/models'
 import { LoadSurveyListSpy } from '@/domain/test'
+import { ApiContext } from '@/presentation/contexts'
 import SurveyList from '@/presentation/pages/survey-list/survey-list'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy
+  setCurrentAccountMock: (account: AccountModel | undefined) => void
 }
 
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
+  const setCurrentAccountMock = jest.fn()
+
   render(
     <BrowserRouter>
-      <SurveyList loadSurveyList={loadSurveyListSpy} />
+      <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+        <SurveyList loadSurveyList={loadSurveyListSpy} />
+      </ApiContext.Provider>
     </BrowserRouter>
   )
 
-  return { loadSurveyListSpy }
+  return { loadSurveyListSpy, setCurrentAccountMock }
 }
 
 describe('SurveyList Component', () => {
@@ -48,7 +55,7 @@ describe('SurveyList Component', () => {
     })
   })
 
-  test('Should render error on failure', async () => {
+  test('Should render error on UnexpectedError', async () => {
     const error = new UnexpectedError()
 
     const loadSurveyListSpy = new LoadSurveyListSpy()
@@ -60,6 +67,21 @@ describe('SurveyList Component', () => {
     await waitFor(() => {
       expect(screen.queryByTestId('survey-list')).not.toBeInTheDocument()
       expect(screen.getByTestId('error')).toHaveTextContent(error.message)
+    })
+  })
+
+  test('Should logout on AccessDeniedError', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy()
+
+    jest
+      .spyOn(loadSurveyListSpy, 'loadAll')
+      .mockRejectedValueOnce(new AccessDeniedError())
+
+    const { setCurrentAccountMock } = makeSut(loadSurveyListSpy)
+
+    await waitFor(() => {
+      expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
+      expect(location.pathname).toBe('/login')
     })
   })
 
