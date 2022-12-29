@@ -9,6 +9,12 @@ const mockUnexpectedError = (): void =>
 const mockAccessDeniedError = (): void =>
   Http.mockForbiddenError(URL_SURVEYS_REGEXP, 'GET')
 
+const mockSuccess = (): void => {
+  cy.fixture('survey-list').then((surveyList) =>
+    Http.mockOk(URL_SURVEYS_REGEXP, 'GET', surveyList)
+  )
+}
+
 describe('SurveyList', () => {
   beforeEach(() => {
     cy.fixture('account').then((account) => {
@@ -53,5 +59,42 @@ describe('SurveyList', () => {
     cy.getByTestId('logout').click()
 
     Helper.testUrl('/login')
+  })
+
+  it('Should present survey items', () => {
+    mockSuccess()
+
+    cy.visit('')
+
+    cy.get('li:empty').should('have.length', 4)
+
+    cy.get('li:not(:empty)').should('have.length', 2)
+
+    cy.get('li:nth-child(1)').then((li) => {
+      assert.equal(li.find('[data-testid="day"]').text(), '03')
+      assert.equal(li.find('[data-testid="month"]').text(), 'fev')
+      assert.equal(li.find('[data-testid="year"]').text(), '2018')
+
+      assert.equal(li.find('[data-testid="question"]').text(), 'Question 1')
+
+      cy.fixture('icons').then((icons) => {
+        assert.equal(li.find('[data-testid="icon"]').attr('src'), icons.thumbUp)
+      })
+    })
+
+    cy.get('li:nth-child(2)').then((li) => {
+      assert.equal(li.find('[data-testid="day"]').text(), '20')
+      assert.equal(li.find('[data-testid="month"]').text(), 'out')
+      assert.equal(li.find('[data-testid="year"]').text(), '2020')
+
+      assert.equal(li.find('[data-testid="question"]').text(), 'Question 2')
+
+      cy.fixture('icons').then((icons) => {
+        assert.equal(
+          li.find('[data-testid="icon"]').attr('src'),
+          icons.thumbDown
+        )
+      })
+    })
   })
 })
