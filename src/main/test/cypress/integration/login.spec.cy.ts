@@ -1,7 +1,21 @@
-import * as FormHelper from '@/main/test/cypress/support/form-helpers'
-import * as Helper from '@/main/test/cypress/support/helpers'
-import * as Http from '@/main/test/cypress/support/login-mocks'
+import * as FormHelper from '@/main/test/cypress/utils/form-helpers'
+import * as Helper from '@/main/test/cypress/utils/helpers'
+import * as Http from '@/main/test/cypress/utils/http-mocks'
 import { faker } from '@faker-js/faker'
+
+const URL_LOGIN_REGEXP = /api\/login/
+
+const mockInvalidCredentialsError = (): void =>
+  Http.mockUnauthorizedError(URL_LOGIN_REGEXP)
+
+const mockUnexpectedError = (): void =>
+  Http.mockServerError(URL_LOGIN_REGEXP, 'POST')
+
+const mockSuccess = (): void => {
+  cy.fixture('account').then((account) =>
+    Http.mockOk(URL_LOGIN_REGEXP, 'POST', account)
+  )
+}
 
 const populateFields = (): void => {
   cy.getByTestId('email').focus().type(faker.internet.email())
@@ -63,7 +77,7 @@ describe('Login', () => {
   })
 
   it('Should present InvalidCredentials on 401', () => {
-    Http.mockInvalidCredentialsError()
+    mockInvalidCredentialsError()
 
     simulateValidSubmit()
 
@@ -73,7 +87,7 @@ describe('Login', () => {
   })
 
   it('Should present UnexpectedError on default error cases', () => {
-    Http.mockUnexpectedError()
+    mockUnexpectedError()
 
     simulateValidSubmit()
 
@@ -85,7 +99,7 @@ describe('Login', () => {
   })
 
   it('Should save account if valid credentials are provided', () => {
-    Http.mockOk()
+    mockSuccess()
 
     simulateValidSubmit()
 
@@ -103,7 +117,7 @@ describe('Login', () => {
   })
 
   it('Should prevent multiple submits', () => {
-    Http.mockOk()
+    mockSuccess()
 
     populateFields()
 
@@ -113,7 +127,7 @@ describe('Login', () => {
   })
 
   it('Should not call submit if form is invalid', () => {
-    Http.mockOk()
+    mockSuccess()
 
     cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
 
