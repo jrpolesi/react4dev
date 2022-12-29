@@ -5,6 +5,7 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
+    experimentalRunAllSpecs: true,
     baseUrl: 'http://localhost:8080',
     fixturesFolder: false,
     supportFile: 'src/main/test/cypress/support/index.ts',

@@ -1,4 +1,5 @@
-import * as FormHelper from '@/main/test/cypress/support/form-helper'
+import * as FormHelper from '@/main/test/cypress/support/form-helpers'
+import * as Helper from '@/main/test/cypress/support/helpers'
 import * as Http from '@/main/test/cypress/support/signup-mocks'
 import { faker } from '@faker-js/faker'
 
@@ -90,7 +91,7 @@ describe('SignUp', () => {
 
     FormHelper.testMainError('Esse e-mail já está em uso.')
 
-    FormHelper.testUrl('/signup')
+    Helper.testUrl('/signup')
   })
 
   it('Should present UnexpectedError on default error cases', () => {
@@ -102,30 +103,7 @@ describe('SignUp', () => {
       'Algo de errado aconteceu. Tente novamente em breve.'
     )
 
-    FormHelper.testUrl('/signup')
-  })
-
-  it('Should present UnexpectedError if invalid data is returned', () => {
-    const password = faker.random.alphaNumeric(5)
-
-    Http.mockInvalidData()
-
-    cy.getByTestId('name').focus().type(faker.name.fullName())
-
-    cy.getByTestId('email').focus().type(faker.internet.email())
-
-    cy.getByTestId('password').focus().type(password)
-
-    cy.getByTestId('passwordConfirmation')
-      .focus()
-      .type(password)
-      .type('{enter}')
-
-    FormHelper.testMainError(
-      'Algo de errado aconteceu. Tente novamente em breve.'
-    )
-
-    FormHelper.testUrl('/signup')
+    Helper.testUrl('/signup')
   })
 
   it('Should save account if valid credentials are provided', () => {
@@ -141,9 +119,9 @@ describe('SignUp', () => {
       .getByTestId('spinner')
       .should('not.exist')
 
-    FormHelper.testUrl('/')
+    Helper.testUrl('/')
 
-    FormHelper.testLocalStorageItem('account')
+    Helper.testLocalStorageItem('account')
   })
 
   it('Should prevent multiple submits', () => {
@@ -153,7 +131,7 @@ describe('SignUp', () => {
 
     cy.getByTestId('submit').click().click()
 
-    FormHelper.testHttpCallsCount(1)
+    Helper.testHttpCallsCount(1)
   })
 
   it('Should not call submit if form is invalid', () => {
@@ -161,6 +139,6 @@ describe('SignUp', () => {
 
     cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
 
-    FormHelper.testHttpCallsCount(0)
+    Helper.testHttpCallsCount(0)
   })
 })
