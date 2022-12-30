@@ -31,9 +31,8 @@ module.exports = merge(common, {
   // Packages that will be loaded with a cdn on index.html
   externals: {
     react: 'React',
-    axios: 'axios',
     'react-dom': 'ReactDOM',
-    'react-router-dom': 'ReactRouterDOM'
+    axios: 'axios'
   },
   plugins: [
     new DefinePlugin({
