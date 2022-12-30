@@ -34,7 +34,8 @@ module.exports = merge(common, {
     historyApiFallback: true,
     devMiddleware: {
       writeToDisk: true
-    }
+    },
+    port: 8080
   },
   plugins: [
     new DefinePlugin({
