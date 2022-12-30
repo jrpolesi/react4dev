@@ -27,6 +27,8 @@ module.exports = merge(common, {
       }
     ]
   },
+  // Remove warnings on devtools console
+  devtool: 'inline-source-map',
   devServer: {
     static: './public',
     historyApiFallback: true,
