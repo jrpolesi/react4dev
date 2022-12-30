@@ -1,6 +1,6 @@
-# fly.toml file generated for throbbing-shadow-359 on 2022-12-29T20:49:18-03:00
+# fly.toml file generated for react-survey-list on 2022-12-29T21:24:38-03:00
 
-app = "throbbing-shadow-359"
+app = "react-survey-list"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
