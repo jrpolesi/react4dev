@@ -67,7 +67,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     if (state.isLoading || state.isFormInvalid) return
 
     try {
-      setState({ ...state, isLoading: true })
+      setState((oldState) => ({ ...oldState, isLoading: true }))
 
       const account = await authentication?.auth({
         email: state.email,
@@ -80,7 +80,11 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
 
       navigate('/', { replace: true })
     } catch (error: any) {
-      setState({ ...state, mainError: error?.message, isLoading: false })
+      setState((oldState) => ({
+        ...oldState,
+        mainError: error?.message,
+        isLoading: false
+      }))
     }
   }
 
