@@ -1,5 +1,5 @@
 export interface LoadSurveyResult {
-  loadBySurveyId: () => Promise<LoadSurveyResult.Model>
+  loadBySurveyId: () => Promise<LoadSurveyResult.Model | undefined>
 }
 
 export namespace LoadSurveyResult {

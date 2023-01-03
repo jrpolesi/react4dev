@@ -8,13 +8,18 @@ export class RemoteLoadSurveyResult implements LoadSurveyResult {
     private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyResult.Model>
   ) {}
 
-  async loadBySurveyId(): Promise<LoadSurveyResult.Model> {
+  async loadBySurveyId(): Promise<LoadSurveyResult.Model | undefined> {
     const httpResponse = await this.httpGetClient.get({ url: this.url })
+
+    const remoteSurveyResult = httpResponse.body
 
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return httpResponse.body!
+        return remoteSurveyResult
+          ? Object.assign({}, remoteSurveyResult, {
+              date: new Date(remoteSurveyResult.date)
+            })
+          : undefined
       case HttpStatusCode.forbidden:
         throw new AccessDeniedError()
       default:
@@ -26,7 +31,7 @@ export class RemoteLoadSurveyResult implements LoadSurveyResult {
 export namespace RemoteLoadSurveyResult {
   export type Model = {
     question: string
-    date: Date
+    date: string
     answers: Array<{
       image?: string
       answer: string
