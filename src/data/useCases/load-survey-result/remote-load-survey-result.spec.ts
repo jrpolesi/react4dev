@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@/data/protocols/http'
-import { HttpGetClientSpy } from '@/data/test'
+import { HttpGetClientSpy, mockRemoteSurveyResultModel } from '@/data/test'
 import { RemoteLoadSurveyResult } from '@/data/useCases/load-survey-result/remote-load-survey-result'
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { faker } from '@faker-js/faker'
@@ -62,5 +62,24 @@ describe('RemoteLoadSurveyResult', () => {
     const promise = sut.loadBySurveyId()
 
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should return a SurveyResult on 200', async () => {
+    const httpResult = mockRemoteSurveyResultModel()
+
+    const { sut, httpGetClientSpy } = makeSut()
+
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+
+    const httpResponse = await sut.loadBySurveyId()
+
+    expect(httpResponse).toEqual({
+      question: httpResult.question,
+      answers: httpResult.answers,
+      date: new Date(httpResult.date)
+    })
   })
 })
