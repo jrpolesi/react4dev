@@ -1,4 +1,5 @@
-import { HttpGetClient } from '@/data/protocols/http'
+import { HttpGetClient, HttpStatusCode } from '@/data/protocols/http'
+import { AccessDeniedError } from '@/domain/errors'
 import { LoadSurveyResult } from '@/domain/useCases'
 
 export class RemoteLoadSurveyResult implements LoadSurveyResult {
@@ -8,12 +9,27 @@ export class RemoteLoadSurveyResult implements LoadSurveyResult {
   ) {}
 
   async loadBySurveyId(): Promise<LoadSurveyResult.Model> {
-    await this.httpGetClient.get({ url: this.url })
+    const httpResponse = await this.httpGetClient.get({ url: this.url })
 
-    return await Promise.resolve({} as any)
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok:
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return httpResponse.body!
+      default:
+        throw new AccessDeniedError()
+    }
   }
 }
 
 export namespace RemoteLoadSurveyResult {
-  export type Model = {}
+  export type Model = {
+    question: string
+    date: Date
+    answers: Array<{
+      image?: string
+      answer: string
+      count: number
+      percent: number
+    }>
+  }
 }
