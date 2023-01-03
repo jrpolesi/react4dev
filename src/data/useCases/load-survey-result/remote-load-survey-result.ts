@@ -1,5 +1,5 @@
 import { HttpGetClient, HttpStatusCode } from '@/data/protocols/http'
-import { AccessDeniedError } from '@/domain/errors'
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { LoadSurveyResult } from '@/domain/useCases'
 
 export class RemoteLoadSurveyResult implements LoadSurveyResult {
@@ -15,8 +15,10 @@ export class RemoteLoadSurveyResult implements LoadSurveyResult {
       case HttpStatusCode.ok:
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return httpResponse.body!
-      default:
+      case HttpStatusCode.forbidden:
         throw new AccessDeniedError()
+      default:
+        throw new UnexpectedError()
     }
   }
 }
