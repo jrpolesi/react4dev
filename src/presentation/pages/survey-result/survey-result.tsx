@@ -8,40 +8,42 @@ const SurveyResult: React.FC = () => {
       <Header />
 
       <div className={styles.contentWrap}>
-        <hgroup>
-          <Calendar date={new Date()} className={styles.calendarWrap} />
+        {false && (
+          <>
+            <hgroup>
+              <Calendar date={new Date()} className={styles.calendarWrap} />
 
-          <h2>Qual é o seu framework web favorito?</h2>
-        </hgroup>
-
-        <FlipMove className={styles.answersList}>
-          <li>
-            <img
-              src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
-              alt=""
-            />
-            <span className={styles.answer}>ReactJS</span>
-            <span className={styles.percent}>50%</span>
-          </li>
-          <li className={styles.active}>
-            <img
-              src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
-              alt=""
-            />
-            <span className={styles.answer}>ReactJS</span>
-            <span className={styles.percent}>50%</span>
-          </li>
-          <li>
-            <img
-              src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
-              alt=""
-            />
-            <span className={styles.answer}>ReactJS</span>
-            <span className={styles.percent}>50%</span>
-          </li>
-        </FlipMove>
-
-        <button>Voltar</button>
+              <h2>Qual é o seu framework web favorito?</h2>
+            </hgroup>
+            <FlipMove className={styles.answersList}>
+              <li>
+                <img
+                  src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
+                  alt=""
+                />
+                <span className={styles.answer}>ReactJS</span>
+                <span className={styles.percent}>50%</span>
+              </li>
+              <li className={styles.active}>
+                <img
+                  src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
+                  alt=""
+                />
+                <span className={styles.answer}>ReactJS</span>
+                <span className={styles.percent}>50%</span>
+              </li>
+              <li>
+                <img
+                  src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
+                  alt=""
+                />
+                <span className={styles.answer}>ReactJS</span>
+                <span className={styles.percent}>50%</span>
+              </li>
+            </FlipMove>
+            <button>Voltar</button>
+          </>
+        )}
       </div>
 
       {false && <Loading />}
