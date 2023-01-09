@@ -3,20 +3,24 @@ import SurveyResult from '@/presentation/pages/survey-result/survey-result'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
+const makeSut = (): void => {
+  render(
+    <ApiContext.Provider
+      value={{
+        setCurrentAccount: jest.fn(),
+        getCurrentAccount: jest.fn()
+      }}
+    >
+      <BrowserRouter>
+        <SurveyResult />
+      </BrowserRouter>
+    </ApiContext.Provider>
+  )
+}
+
 describe('SurveyResult Component', () => {
   test('Should present correct initial state', () => {
-    render(
-      <ApiContext.Provider
-        value={{
-          setCurrentAccount: jest.fn(),
-          getCurrentAccount: jest.fn()
-        }}
-      >
-        <BrowserRouter>
-          <SurveyResult />
-        </BrowserRouter>
-      </ApiContext.Provider>
-    )
+    makeSut()
 
     const surveyList = screen.getByTestId('survey-result')
 
