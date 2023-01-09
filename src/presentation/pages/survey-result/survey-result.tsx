@@ -1,14 +1,27 @@
-import { Calendar, Footer, Header, Loading } from '@/presentation/components'
+import {
+  Calendar,
+  Error,
+  Footer,
+  Header,
+  Loading
+} from '@/presentation/components'
+import { useState } from 'react'
 import FlipMove from 'react-flip-move'
 import styles from './survey-result-styles.scss'
 
 const SurveyResult: React.FC = () => {
+  const [state] = useState({
+    isLoading: false,
+    error: '',
+    surveyResult: null
+  })
+
   return (
     <div className={styles.surveyResultWrap}>
       <Header />
 
-      <div className={styles.contentWrap}>
-        {true && (
+      <div data-testid="survey-result" className={styles.contentWrap}>
+        {state.surveyResult && (
           <>
             <hgroup>
               <Calendar date={new Date()} className={styles.calendarWrap} />
@@ -46,7 +59,8 @@ const SurveyResult: React.FC = () => {
         )}
       </div>
 
-      {false && <Loading />}
+      {state.isLoading && <Loading />}
+      {state.error && <Error error={state.error} reload={() => {}} />}
       <Footer />
     </div>
   )
