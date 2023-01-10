@@ -10,19 +10,32 @@ import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
 import styles from './survey-result-styles.scss'
 
+type SurveyResultState = {
+  isLoading: boolean
+  error: string
+  surveyResult: null | LoadSurveyResult.Model
+}
+
 type Props = {
   loadSurveyResult: LoadSurveyResult
 }
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
-  const [state] = useState({
+  const [state, setState] = useState<SurveyResultState>({
     isLoading: false,
     error: '',
     surveyResult: null
   })
 
   useEffect(() => {
-    loadSurveyResult.loadBySurveyId().then().catch()
+    loadSurveyResult
+      .loadBySurveyId()
+      .then(
+        (surveyResult) =>
+          surveyResult &&
+          setState((oldState) => ({ ...oldState, surveyResult }))
+      )
+      .catch()
   }, [])
 
   return (
@@ -33,35 +46,32 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
         {state.surveyResult && (
           <>
             <hgroup>
-              <Calendar date={new Date()} className={styles.calendarWrap} />
+              <Calendar date={state.surveyResult.date} />
 
-              <h2>Qual é o seu framework web favorito?</h2>
+              <h2 data-testid="question">{state.surveyResult.question}</h2>
             </hgroup>
-            <FlipMove className={styles.answersList}>
-              <li>
-                <img
-                  src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
-                  alt=""
-                />
-                <span className={styles.answer}>ReactJS</span>
-                <span className={styles.percent}>50%</span>
-              </li>
-              <li className={styles.active}>
-                <img
-                  src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
-                  alt=""
-                />
-                <span className={styles.answer}>ReactJS</span>
-                <span className={styles.percent}>50%</span>
-              </li>
-              <li>
-                <img
-                  src="https://nextsoftware.io/files/images/logos/main/reactjs-logo.png"
-                  alt=""
-                />
-                <span className={styles.answer}>ReactJS</span>
-                <span className={styles.percent}>50%</span>
-              </li>
+            <FlipMove data-testid="answers" className={styles.answersList}>
+              {state.surveyResult.answers.map((answer) => (
+                <li
+                  data-testid="answer-wrap"
+                  key={answer.answer}
+                  className={answer.isCurrentAccountAnswer ? styles.active : ''}
+                >
+                  {answer.image && (
+                    <img
+                      data-testid="image"
+                      src={answer.image}
+                      alt={answer.answer}
+                    />
+                  )}
+                  <span data-testid="answer" className={styles.answer}>
+                    {answer.answer}
+                  </span>
+                  <span data-testid="percent" className={styles.percent}>
+                    {answer.percent}%
+                  </span>
+                </li>
+              ))}
             </FlipMove>
             <button>Voltar</button>
           </>
