@@ -1,9 +1,16 @@
+import { LoadSurveyResultSpy } from '@/domain/test/mock-survey-result'
 import ApiContext from '@/presentation/contexts/api/api-context'
 import SurveyResult from '@/presentation/pages/survey-result/survey-result'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
-const makeSut = (): void => {
+type SutTypes = {
+  loadSurveyResultSpy: LoadSurveyResultSpy
+}
+
+const makeSut = (): SutTypes => {
+  const loadSurveyResultSpy = new LoadSurveyResultSpy()
+
   render(
     <ApiContext.Provider
       value={{
@@ -12,10 +19,12 @@ const makeSut = (): void => {
       }}
     >
       <BrowserRouter>
-        <SurveyResult />
+        <SurveyResult loadSurveyResult={loadSurveyResultSpy} />
       </BrowserRouter>
     </ApiContext.Provider>
   )
+
+  return { loadSurveyResultSpy }
 }
 
 describe('SurveyResult Component', () => {
@@ -27,5 +36,11 @@ describe('SurveyResult Component', () => {
     expect(surveyList.childElementCount).toBe(0)
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+  })
+
+  test('Should call LoadSurveyResult', () => {
+    const { loadSurveyResultSpy } = makeSut()
+
+    expect(loadSurveyResultSpy.callsCount).toBe(1)
   })
 })
