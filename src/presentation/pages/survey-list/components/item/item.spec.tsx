@@ -1,10 +1,15 @@
 import { mockSurveyModel } from '@/domain/test'
 import { IconName } from '@/presentation/components'
 import SurveyItem from '@/presentation/pages/survey-list/components/item/item'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
 const makeSut = (survey = mockSurveyModel()): void => {
-  render(<SurveyItem survey={survey} />)
+  render(
+    <BrowserRouter>
+      <SurveyItem survey={survey} />
+    </BrowserRouter>
+  )
 }
 
 describe('SurveyItem Component', () => {
@@ -43,5 +48,15 @@ describe('SurveyItem Component', () => {
     expect(screen.getByTestId('day')).toHaveTextContent('03')
     expect(screen.getByTestId('month').textContent).toBe('mai')
     expect(screen.getByTestId('year')).toHaveTextContent('2019')
+  })
+
+  test('Should go to SurveyResult', () => {
+    const survey = mockSurveyModel()
+
+    makeSut(survey)
+
+    fireEvent.click(screen.getByTestId('link'))
+
+    expect(location.pathname).toBe(`/surveys/${survey.id}`)
   })
 })
