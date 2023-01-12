@@ -3,7 +3,7 @@ import { AccountModel } from '@/domain/models'
 import { LoadSurveyResultSpy, mockSurveyResultModel } from '@/domain/test'
 import ApiContext from '@/presentation/contexts/api/api-context'
 import SurveyResult from '@/presentation/pages/survey-result/survey-result'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
 type SutTypes = {
@@ -111,17 +111,33 @@ describe('SurveyResult Component', () => {
   })
 
   test('Should logout on AccessDeniedError', async () => {
-    const loadSurveyListSpy = new LoadSurveyResultSpy()
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
 
     jest
-      .spyOn(loadSurveyListSpy, 'loadBySurveyId')
+      .spyOn(loadSurveyResultSpy, 'loadBySurveyId')
       .mockRejectedValueOnce(new AccessDeniedError())
 
-    const { setCurrentAccountMock } = makeSut(loadSurveyListSpy)
+    const { setCurrentAccountMock } = makeSut(loadSurveyResultSpy)
 
     await waitFor(() => {
       expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
       expect(location.pathname).toBe('/login')
     })
+  })
+
+  test('Should call LoadSurveyResult on reload', async () => {
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
+
+    jest
+      .spyOn(loadSurveyResultSpy, 'loadBySurveyId')
+      .mockRejectedValueOnce(new UnexpectedError())
+
+    makeSut(loadSurveyResultSpy)
+
+    await waitFor(() => fireEvent.click(screen.getByTestId('reload')))
+
+    expect(loadSurveyResultSpy.callsCount).toBe(1)
+
+    await waitFor(() => screen.getByRole('heading'))
   })
 })
