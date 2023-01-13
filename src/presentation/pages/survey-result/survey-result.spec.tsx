@@ -11,6 +11,13 @@ type SutTypes = {
   setCurrentAccountMock: (account: AccountModel) => void
 }
 
+const mockedNavigate = jest.fn()
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedNavigate
+}))
+
 const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
   const setCurrentAccountMock = jest.fn()
 
@@ -31,6 +38,10 @@ const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
 }
 
 describe('SurveyResult Component', () => {
+  beforeEach(() => {
+    mockedNavigate.mockReset()
+  })
+
   test('Should present correct initial state', async () => {
     makeSut()
 
@@ -121,7 +132,7 @@ describe('SurveyResult Component', () => {
 
     await waitFor(() => {
       expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
-      expect(location.pathname).toBe('/login')
+      expect(mockedNavigate).toBeCalledWith('/login')
     })
   })
 
@@ -139,5 +150,13 @@ describe('SurveyResult Component', () => {
     expect(loadSurveyResultSpy.callsCount).toBe(1)
 
     await waitFor(() => screen.getByRole('heading'))
+  })
+
+  test('Should goto SurveyList on back button click', async () => {
+    makeSut()
+
+    await waitFor(() => fireEvent.click(screen.getByTestId('back-button')))
+
+    expect(mockedNavigate).toBeCalledWith(-1)
   })
 })
