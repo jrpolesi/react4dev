@@ -6,6 +6,9 @@ const URL_SURVEYS_REGEXP = /api\/surveys/
 const mockUnexpectedError = (): void =>
   Http.mockServerError(URL_SURVEYS_REGEXP, 'GET')
 
+const mockAccessDeniedError = (): void =>
+  Http.mockForbiddenError(URL_SURVEYS_REGEXP, 'GET')
+
 const mockSuccess = (): void => {
   cy.fixture('survey-result').then((surveyList) =>
     Http.mockOk(URL_SURVEYS_REGEXP, 'GET', surveyList)
@@ -45,5 +48,13 @@ describe('SurveyResult', () => {
     cy.getByTestId('reload').click()
 
     cy.getByTestId('question').should('exist')
+  })
+
+  it('Should logout on AccessDeniedError', () => {
+    mockAccessDeniedError()
+
+    cy.visit('/surveys/any_id')
+
+    Helper.testUrl('/login')
   })
 })
