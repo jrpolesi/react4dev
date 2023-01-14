@@ -1,5 +1,6 @@
 import { LoadSurveyResult } from '@/domain/useCases'
 import { Calendar } from '@/presentation/components'
+import { SurveyResultAnswer } from '@/presentation/pages/survey-result/components'
 import FlipMove from 'react-flip-move'
 import { useNavigate } from 'react-router-dom'
 import styles from './result-styles.scss'
@@ -19,23 +20,11 @@ const Result: React.FC<Props> = ({ surveyResult }: Props) => {
         <h2 data-testid="question">{surveyResult.question}</h2>
       </hgroup>
       <FlipMove data-testid="answers" className={styles.answersList}>
-        {surveyResult.answers.map((answer) => (
-          <li
-            data-testid="answer-wrap"
-            key={answer.answer}
-            className={answer.isCurrentAccountAnswer ? styles.active : ''}
-          >
-            {answer.image && (
-              <img data-testid="image" src={answer.image} alt={answer.answer} />
-            )}
-            <span data-testid="answer" className={styles.answer}>
-              {answer.answer}
-            </span>
-            <span data-testid="percent" className={styles.percent}>
-              {answer.percent}%
-            </span>
-          </li>
-        ))}
+        <>
+          {surveyResult.answers.map((answer) => (
+            <SurveyResultAnswer key={answer.answer} answer={answer} />
+          ))}
+        </>
       </FlipMove>
 
       <button
