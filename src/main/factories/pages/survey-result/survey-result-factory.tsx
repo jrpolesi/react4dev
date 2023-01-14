@@ -3,12 +3,16 @@ import { SurveyResult } from '@/presentation/pages'
 import { ReactElement } from 'react'
 import { useParams } from 'react-router-dom'
 
-export const makeSurveyResult = (): ReactElement => {
-  const { id } = useParams<{ id: string }>()
+const SurveyResultScreen: React.FC = () => {
+  const { id } = useParams()
 
   if (!id) {
     return <></>
   }
 
   return <SurveyResult loadSurveyResult={makeRemoteLoadSurveyResult(id)} />
+}
+
+export const makeSurveyResult = (): ReactElement => {
+  return <SurveyResultScreen />
 }
