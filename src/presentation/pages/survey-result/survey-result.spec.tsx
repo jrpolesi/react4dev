@@ -159,4 +159,16 @@ describe('SurveyResult Component', () => {
 
     expect(mockedNavigate).toBeCalledWith(-1)
   })
+
+  test('Should not present loading on active answer click', async () => {
+    makeSut()
+
+    await waitFor(() => {
+      const answersWrap = screen.queryAllByTestId('answer-wrap')
+
+      fireEvent.click(answersWrap[0])
+
+      expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
+    })
+  })
 })
