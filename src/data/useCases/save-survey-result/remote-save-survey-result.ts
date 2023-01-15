@@ -13,7 +13,8 @@ export class RemoteSaveSurveyResult implements SaveSurveyResult {
   ): Promise<SaveSurveyResult.Model | undefined> {
     await this.httpClient.request({
       url: this.url,
-      method: 'put'
+      method: 'put',
+      body: params
     })
 
     return undefined
