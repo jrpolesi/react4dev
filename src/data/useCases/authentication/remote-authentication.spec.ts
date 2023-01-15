@@ -1,7 +1,10 @@
 import { HttpStatusCode } from '@/data/protocols/http'
 import { HttpClientSpy } from '@/data/test'
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors'
-import { mockAuthentication, mockAuthenticationModel } from '@/domain/test'
+import {
+  mockAuthenticationParams,
+  mockAuthenticationModel
+} from '@/domain/test'
 import { Authentication } from '@/domain/useCases'
 import { faker } from '@faker-js/faker'
 import { RemoteAuthentication } from './remote-authentication'
@@ -28,7 +31,7 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
 describe('RemoteAuthentication', () => {
   test('Should call HttpClient with correct URL and method', async () => {
     const url = faker.internet.url()
-    const authParams = mockAuthentication()
+    const authParams = mockAuthenticationParams()
 
     const { sut, httpClientSpy } = makeSut(url)
 
@@ -40,7 +43,7 @@ describe('RemoteAuthentication', () => {
   })
 
   test('Should throw InvalidCredentialsError if HttpClient returns 401', async () => {
-    const authParams = mockAuthentication()
+    const authParams = mockAuthenticationParams()
 
     const { sut, httpClientSpy } = makeSut()
 
@@ -54,7 +57,7 @@ describe('RemoteAuthentication', () => {
   })
 
   test('Should throw UnexpectedError if HttpClient returns 400', async () => {
-    const authParams = mockAuthentication()
+    const authParams = mockAuthenticationParams()
 
     const { sut, httpClientSpy } = makeSut()
 
@@ -68,7 +71,7 @@ describe('RemoteAuthentication', () => {
   })
 
   test('Should throw UnexpectedError if HttpClient returns 404', async () => {
-    const authParams = mockAuthentication()
+    const authParams = mockAuthenticationParams()
 
     const { sut, httpClientSpy } = makeSut()
 
@@ -82,7 +85,7 @@ describe('RemoteAuthentication', () => {
   })
 
   test('Should throw UnexpectedError if HttpClient returns 500', async () => {
-    const authParams = mockAuthentication()
+    const authParams = mockAuthenticationParams()
 
     const { sut, httpClientSpy } = makeSut()
 
@@ -98,7 +101,7 @@ describe('RemoteAuthentication', () => {
   test('Should return an Authentication.Model with HttpClient return 200', async () => {
     const httpBodyResult = mockAuthenticationModel()
 
-    const authParams = mockAuthentication()
+    const authParams = mockAuthenticationParams()
 
     const { sut, httpClientSpy } = makeSut()
 
