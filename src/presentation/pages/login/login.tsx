@@ -13,16 +13,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import styles from './login-styles.scss'
 
-export type LoginStateProps = {
-  isLoading: boolean
-  email: string
-  password: string
-  emailError: string
-  passwordError: string
-  mainError: string
-  isFormInvalid: boolean
-}
-
 export type LoginErrorProps = {}
 
 export type Props = {
@@ -32,7 +22,7 @@ export type Props = {
 
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
   const { setCurrentAccount } = useContext(ApiContext)
-  const [state, setState] = useRecoilState<LoginStateProps>(loginState)
+  const [state, setState] = useRecoilState(loginState)
   const navigate = useNavigate()
 
   const validate = (field: string): void => {

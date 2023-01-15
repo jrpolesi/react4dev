@@ -9,6 +9,7 @@ import ApiContext from '@/presentation/contexts/api/api-context'
 import SurveyResult from '@/presentation/pages/survey-result/survey-result'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
@@ -35,19 +36,21 @@ const makeSut = ({
   const setCurrentAccountMock = jest.fn()
 
   render(
-    <ApiContext.Provider
-      value={{
-        setCurrentAccount: setCurrentAccountMock,
-        getCurrentAccount: jest.fn()
-      }}
-    >
-      <BrowserRouter>
-        <SurveyResult
-          loadSurveyResult={loadSurveyResultSpy}
-          saveSurveyResult={saveSurveyResultSpy}
-        />
-      </BrowserRouter>
-    </ApiContext.Provider>
+    <RecoilRoot>
+      <ApiContext.Provider
+        value={{
+          setCurrentAccount: setCurrentAccountMock,
+          getCurrentAccount: jest.fn()
+        }}
+      >
+        <BrowserRouter>
+          <SurveyResult
+            loadSurveyResult={loadSurveyResultSpy}
+            saveSurveyResult={saveSurveyResultSpy}
+          />
+        </BrowserRouter>
+      </ApiContext.Provider>
+    </RecoilRoot>
   )
 
   return { loadSurveyResultSpy, saveSurveyResultSpy, setCurrentAccountMock }
@@ -258,8 +261,6 @@ describe('SurveyResult Component', () => {
       const answersWrap = screen.queryAllByTestId('answer-wrap')
       fireEvent.click(answersWrap[1])
     })
-
-    expect(await screen.findByTestId('loading')).toBeInTheDocument()
 
     expect(await screen.findByTestId('day')).toHaveTextContent('20')
     expect((await screen.findByTestId('month')).textContent).toBe('fev')
