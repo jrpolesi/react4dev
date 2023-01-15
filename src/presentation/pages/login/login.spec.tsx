@@ -1,7 +1,7 @@
 import { InvalidCredentialsError } from '@/domain/errors'
 import { AuthenticationSpy } from '@/domain/test'
 import { Authentication } from '@/domain/useCases'
-import { ApiContext } from '@/presentation/contexts'
+import { currentAccountState } from '@/presentation/components'
 import { Login } from '@/presentation/pages/'
 import { Helper, ValidationStub } from '@/presentation/test'
 import { faker } from '@faker-js/faker'
@@ -25,21 +25,16 @@ const makeSut = (params?: SutParams): SutTypes => {
 
   validationStub.errorMessage = params?.validationError
 
+  const state = {
+    setCurrentAccount: setCurrentAccountMock,
+    getCurrentAccount: jest.fn()
+  }
+
   render(
-    <RecoilRoot>
-      <ApiContext.Provider
-        value={{
-          setCurrentAccount: setCurrentAccountMock,
-          getCurrentAccount: jest.fn()
-        }}
-      >
-        <BrowserRouter>
-          <Login
-            validation={validationStub}
-            authentication={authenticationSpy}
-          />
-        </BrowserRouter>
-      </ApiContext.Provider>
+    <RecoilRoot initializeState={({ set }) => set(currentAccountState, state)}>
+      <BrowserRouter>
+        <Login validation={validationStub} authentication={authenticationSpy} />
+      </BrowserRouter>
     </RecoilRoot>
   )
 

@@ -1,7 +1,7 @@
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors'
 import { AccountModel } from '@/domain/models'
 import { LoadSurveyListSpy } from '@/domain/test'
-import { ApiContext } from '@/presentation/contexts'
+import { currentAccountState } from '@/presentation/components'
 import SurveyList from '@/presentation/pages/survey-list/survey-list'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
@@ -15,17 +15,17 @@ type SutTypes = {
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
   const setCurrentAccountMock = jest.fn()
 
+  const state = {
+    setCurrentAccount: setCurrentAccountMock,
+    getCurrentAccount: jest.fn()
+  }
+
   render(
     <BrowserRouter>
-      <RecoilRoot>
-        <ApiContext.Provider
-          value={{
-            setCurrentAccount: setCurrentAccountMock,
-            getCurrentAccount: jest.fn()
-          }}
-        >
-          <SurveyList loadSurveyList={loadSurveyListSpy} />
-        </ApiContext.Provider>
+      <RecoilRoot
+        initializeState={({ set }) => set(currentAccountState, state)}
+      >
+        <SurveyList loadSurveyList={loadSurveyListSpy} />
       </RecoilRoot>
     </BrowserRouter>
   )

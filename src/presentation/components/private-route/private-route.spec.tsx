@@ -1,23 +1,26 @@
 import { mockAccountModel } from '@/domain/test'
+import { currentAccountState } from '@/presentation/components/atoms/atoms'
 import PrivateRoute from '@/presentation/components/private-route/private-route'
-import { ApiContext } from '@/presentation/contexts'
 import { render } from '@testing-library/react'
 import 'jest-localstorage-mock'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 
 const makeSut = (account = mockAccountModel()): void => {
+  const state = {
+    getCurrentAccount: () => account,
+    setCurrentAccount: jest.fn()
+  }
+
   render(
     <BrowserRouter>
-      <ApiContext.Provider
-        value={{
-          getCurrentAccount: () => account,
-          setCurrentAccount: jest.fn()
-        }}
+      <RecoilRoot
+        initializeState={({ set }) => set(currentAccountState, state)}
       >
         <Routes>
           <Route index element={<PrivateRoute component={<></>} />} />
         </Routes>
-      </ApiContext.Provider>
+      </RecoilRoot>
     </BrowserRouter>
   )
 }

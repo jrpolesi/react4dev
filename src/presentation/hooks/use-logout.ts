@@ -1,6 +1,6 @@
-import { ApiContext } from '@/presentation/contexts'
-import { useContext } from 'react'
+import { currentAccountState } from '@/presentation/components'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 
 type CallBackType = () => void
 type ResultType = CallBackType
@@ -8,7 +8,7 @@ type ResultType = CallBackType
 export const useLogout = (): ResultType => {
   const navigate = useNavigate()
 
-  const { setCurrentAccount } = useContext(ApiContext)
+  const { setCurrentAccount } = useRecoilValue(currentAccountState)
 
   return (): void => {
     setCurrentAccount(undefined)

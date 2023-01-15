@@ -5,7 +5,7 @@ import {
   mockSurveyResultModel,
   SaveSurveyResultSpy
 } from '@/domain/test'
-import ApiContext from '@/presentation/contexts/api/api-context'
+import { currentAccountState } from '@/presentation/components'
 import SurveyResult from '@/presentation/pages/survey-result/survey-result'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
@@ -35,21 +35,19 @@ const makeSut = ({
 }: SutParams = {}): SutTypes => {
   const setCurrentAccountMock = jest.fn()
 
+  const state = {
+    setCurrentAccount: setCurrentAccountMock,
+    getCurrentAccount: jest.fn()
+  }
+
   render(
-    <RecoilRoot>
-      <ApiContext.Provider
-        value={{
-          setCurrentAccount: setCurrentAccountMock,
-          getCurrentAccount: jest.fn()
-        }}
-      >
-        <BrowserRouter>
-          <SurveyResult
-            loadSurveyResult={loadSurveyResultSpy}
-            saveSurveyResult={saveSurveyResultSpy}
-          />
-        </BrowserRouter>
-      </ApiContext.Provider>
+    <RecoilRoot initializeState={({ set }) => set(currentAccountState, state)}>
+      <BrowserRouter>
+        <SurveyResult
+          loadSurveyResult={loadSurveyResultSpy}
+          saveSurveyResult={saveSurveyResultSpy}
+        />
+      </BrowserRouter>
     </RecoilRoot>
   )
 
