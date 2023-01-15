@@ -13,7 +13,7 @@ import {
 import { Validation } from '@/presentation/protocols/validation'
 import { FormEvent, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import styles from './login-styles.scss'
 
 export type LoginErrorProps = {}
@@ -24,6 +24,8 @@ export type Props = {
 }
 
 const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
+  const resetLoginState = useResetRecoilState(loginState)
+
   const { setCurrentAccount } = useRecoilValue(currentAccountState)
   const [state, setState] = useRecoilState(loginState)
   const navigate = useNavigate()
@@ -42,6 +44,7 @@ const Login: React.FC<Props> = ({ validation, authentication }: Props) => {
     }))
   }
 
+  useEffect(() => resetLoginState(), [])
   useEffect(() => validate('email'), [state.email])
   useEffect(() => validate('password'), [state.password])
 
