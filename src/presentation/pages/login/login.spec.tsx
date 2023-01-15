@@ -7,6 +7,7 @@ import { Helper, ValidationStub } from '@/presentation/test'
 import { faker } from '@faker-js/faker'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy
@@ -25,16 +26,21 @@ const makeSut = (params?: SutParams): SutTypes => {
   validationStub.errorMessage = params?.validationError
 
   render(
-    <ApiContext.Provider
-      value={{
-        setCurrentAccount: setCurrentAccountMock,
-        getCurrentAccount: jest.fn()
-      }}
-    >
-      <BrowserRouter>
-        <Login validation={validationStub} authentication={authenticationSpy} />
-      </BrowserRouter>
-    </ApiContext.Provider>
+    <RecoilRoot>
+      <ApiContext.Provider
+        value={{
+          setCurrentAccount: setCurrentAccountMock,
+          getCurrentAccount: jest.fn()
+        }}
+      >
+        <BrowserRouter>
+          <Login
+            validation={validationStub}
+            authentication={authenticationSpy}
+          />
+        </BrowserRouter>
+      </ApiContext.Provider>
+    </RecoilRoot>
   )
 
   history.replaceState({}, '', '/login')

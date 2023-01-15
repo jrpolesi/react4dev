@@ -1,17 +1,17 @@
-import { FormContext } from '@/presentation/contexts'
 import { LoginErrorProps } from '@/presentation/pages/login/login'
-import { DetailedHTMLProps, InputHTMLAttributes, useContext } from 'react'
-import styles from './input-styles.scss'
+import { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import styles from './input-base-styles.scss'
 
 type Props = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 > & {
   name: string
+  state: any
+  setState: any
 }
 
-const Input: React.FC<Props> = (props: Props) => {
-  const { state, setState } = useContext(FormContext)
+const InputBase: React.FC<Props> = ({ state, setState, ...props }: Props) => {
   const error = state[`${props.name}Error` as keyof LoginErrorProps]
 
   return (
@@ -46,4 +46,4 @@ const Input: React.FC<Props> = (props: Props) => {
   )
 }
 
-export default Input
+export default InputBase

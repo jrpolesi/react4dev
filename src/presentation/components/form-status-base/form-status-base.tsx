@@ -1,10 +1,11 @@
 import { Spinner } from '@/presentation/components'
-import { FormContext } from '@/presentation/contexts'
-import { useContext } from 'react'
-import styles from './form-status-styles.scss'
+import styles from './form-status-base-styles.scss'
 
-const FormStatus: React.FC = () => {
-  const { state } = useContext(FormContext)
+type Props = {
+  state: any
+}
+
+const FormStatusBase: React.FC<Props> = ({ state }: Props) => {
   const { isLoading, mainError } = state
 
   return (
@@ -19,4 +20,4 @@ const FormStatus: React.FC = () => {
   )
 }
 
-export default FormStatus
+export default FormStatusBase
