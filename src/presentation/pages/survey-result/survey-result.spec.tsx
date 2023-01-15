@@ -224,15 +224,19 @@ describe('SurveyResult Component', () => {
     })
   })
 
-
   test('Should logout on AccessDeniedError', async () => {
-    const loadSurveyResultSpy = new LoadSurveyResultSpy()
+    const saveSurveyResultSpy = new SaveSurveyResultSpy()
 
     jest
-      .spyOn(loadSurveyResultSpy, 'loadBySurveyId')
+      .spyOn(saveSurveyResultSpy, 'save')
       .mockRejectedValueOnce(new AccessDeniedError())
 
-    const { setCurrentAccountMock } = makeSut({ loadSurveyResultSpy })
+    const { setCurrentAccountMock } = makeSut({ saveSurveyResultSpy })
+
+    await waitFor(async () => {
+      const answersWrap = screen.queryAllByTestId('answer-wrap')
+      fireEvent.click(answersWrap[1])
+    })
 
     await waitFor(() => {
       expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
