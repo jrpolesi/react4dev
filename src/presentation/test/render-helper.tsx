@@ -3,11 +3,12 @@ import { mockAccountModel } from '@/domain/test'
 import { currentAccountState } from '@/presentation/components'
 import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
+import { MutableSnapshot, RecoilRoot, RecoilState } from 'recoil'
 
 type Params = {
   Page: React.FC
   account?: AccountModel
+  states?: Array<{ atom: RecoilState<any>; value: any }>
 }
 
 type Result = {
@@ -16,20 +17,28 @@ type Result = {
 
 export const renderWithHistory = ({
   Page,
-  account = mockAccountModel()
+  account = mockAccountModel(),
+  states = []
 }: Params): Result => {
   const setCurrentAccountMock = jest.fn()
 
-  const state = {
+  const mockedState = {
     setCurrentAccount: setCurrentAccountMock,
     getCurrentAccount: () => account
   }
 
+  const initializeState = ({ set }: MutableSnapshot): void => {
+    const allStates = [
+      ...states,
+      { atom: currentAccountState, value: mockedState }
+    ]
+
+    allStates.forEach((state) => set(state.atom, state.value))
+  }
+
   render(
     <BrowserRouter>
-      <RecoilRoot
-        initializeState={({ set }) => set(currentAccountState, state)}
-      >
+      <RecoilRoot initializeState={initializeState}>
         <Page />
       </RecoilRoot>
     </BrowserRouter>

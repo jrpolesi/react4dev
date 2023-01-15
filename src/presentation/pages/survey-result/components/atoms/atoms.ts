@@ -1,7 +1,7 @@
 import { LoadSurveyResult } from '@/domain/useCases'
 import { atom } from 'recoil'
 
-type SurveyResultState = {
+export type SurveyResultState = {
   isLoading: boolean
   error: string
   surveyResult: null | LoadSurveyResult.Model

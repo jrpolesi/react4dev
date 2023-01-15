@@ -5,6 +5,10 @@ import {
   mockSurveyResultModel,
   SaveSurveyResultSpy
 } from '@/domain/test'
+import {
+  surveyResultState,
+  SurveyResultState
+} from '@/presentation/pages/survey-result/components'
 import SurveyResult from '@/presentation/pages/survey-result/survey-result'
 import { renderWithHistory } from '@/presentation/test'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
@@ -25,11 +29,13 @@ jest.mock('react-router-dom', () => ({
 type SutParams = {
   loadSurveyResultSpy?: LoadSurveyResultSpy
   saveSurveyResultSpy?: SaveSurveyResultSpy
+  initialState?: SurveyResultState
 }
 
 const makeSut = ({
   loadSurveyResultSpy = new LoadSurveyResultSpy(),
-  saveSurveyResultSpy = new SaveSurveyResultSpy()
+  saveSurveyResultSpy = new SaveSurveyResultSpy(),
+  initialState
 }: SutParams = {}): SutTypes => {
   const { setCurrentAccountMock } = renderWithHistory({
     Page: () => (
@@ -37,7 +43,10 @@ const makeSut = ({
         loadSurveyResult={loadSurveyResultSpy}
         saveSurveyResult={saveSurveyResultSpy}
       />
-    )
+    ),
+    states: initialState
+      ? [{ atom: surveyResultState, value: initialState }]
+      : []
   })
 
   return { loadSurveyResultSpy, saveSurveyResultSpy, setCurrentAccountMock }
@@ -285,14 +294,20 @@ describe('SurveyResult Component', () => {
   })
 
   test('Should prevent multiple answer click', async () => {
-    const { saveSurveyResultSpy } = makeSut()
+    const initialState = {
+      isLoading: true,
+      error: '',
+      surveyResult: null,
+      reload: false
+    }
+
+    const { saveSurveyResultSpy } = makeSut({ initialState })
 
     await waitFor(async () => {
       const answersWrap = screen.queryAllByTestId('answer-wrap')
       fireEvent.click(answersWrap[1])
-      fireEvent.click(answersWrap[1])
     })
 
-    expect(saveSurveyResultSpy.callsCount).toBe(1)
+    expect(saveSurveyResultSpy.callsCount).toBe(0)
   })
 })
