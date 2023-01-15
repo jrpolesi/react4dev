@@ -5,6 +5,7 @@ import { ApiContext } from '@/presentation/contexts'
 import SurveyList from '@/presentation/pages/survey-list/survey-list'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 
 type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy
@@ -16,14 +17,16 @@ const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
 
   render(
     <BrowserRouter>
-      <ApiContext.Provider
-        value={{
-          setCurrentAccount: setCurrentAccountMock,
-          getCurrentAccount: jest.fn()
-        }}
-      >
-        <SurveyList loadSurveyList={loadSurveyListSpy} />
-      </ApiContext.Provider>
+      <RecoilRoot>
+        <ApiContext.Provider
+          value={{
+            setCurrentAccount: setCurrentAccountMock,
+            getCurrentAccount: jest.fn()
+          }}
+        >
+          <SurveyList loadSurveyList={loadSurveyListSpy} />
+        </ApiContext.Provider>
+      </RecoilRoot>
     </BrowserRouter>
   )
 
