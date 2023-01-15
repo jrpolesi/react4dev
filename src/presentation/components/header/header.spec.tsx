@@ -1,30 +1,18 @@
 import { AccountModel } from '@/domain/models'
 import { mockAccountModel } from '@/domain/test'
-import { currentAccountState } from '@/presentation/components/atoms/atoms'
 import Header from '@/presentation/components/header/header'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
+import { renderWithHistory } from '@/presentation/test'
+import { fireEvent, screen } from '@testing-library/react'
 
 type SutTypes = {
   setCurrentAccountMock: (account: AccountModel) => void
 }
 
 const makeSut = (account = mockAccountModel()): SutTypes => {
-  const setCurrentAccountMock = jest.fn()
-
-  const state = {
-    setCurrentAccount: setCurrentAccountMock,
-    getCurrentAccount: () => account
-  }
-
-  render(
-    <RecoilRoot initializeState={({ set }) => set(currentAccountState, state)}>
-      <BrowserRouter>
-        <Header />
-      </BrowserRouter>
-    </RecoilRoot>
-  )
+  const { setCurrentAccountMock } = renderWithHistory({
+    Page: () => <Header />,
+    account
+  })
 
   return {
     setCurrentAccountMock

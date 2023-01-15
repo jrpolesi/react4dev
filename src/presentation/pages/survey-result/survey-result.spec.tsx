@@ -5,11 +5,9 @@ import {
   mockSurveyResultModel,
   SaveSurveyResultSpy
 } from '@/domain/test'
-import { currentAccountState } from '@/presentation/components'
 import SurveyResult from '@/presentation/pages/survey-result/survey-result'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
+import { renderWithHistory } from '@/presentation/test'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
@@ -33,23 +31,14 @@ const makeSut = ({
   loadSurveyResultSpy = new LoadSurveyResultSpy(),
   saveSurveyResultSpy = new SaveSurveyResultSpy()
 }: SutParams = {}): SutTypes => {
-  const setCurrentAccountMock = jest.fn()
-
-  const state = {
-    setCurrentAccount: setCurrentAccountMock,
-    getCurrentAccount: jest.fn()
-  }
-
-  render(
-    <RecoilRoot initializeState={({ set }) => set(currentAccountState, state)}>
-      <BrowserRouter>
-        <SurveyResult
-          loadSurveyResult={loadSurveyResultSpy}
-          saveSurveyResult={saveSurveyResultSpy}
-        />
-      </BrowserRouter>
-    </RecoilRoot>
-  )
+  const { setCurrentAccountMock } = renderWithHistory({
+    Page: () => (
+      <SurveyResult
+        loadSurveyResult={loadSurveyResultSpy}
+        saveSurveyResult={saveSurveyResultSpy}
+      />
+    )
+  })
 
   return { loadSurveyResultSpy, saveSurveyResultSpy, setCurrentAccountMock }
 }
