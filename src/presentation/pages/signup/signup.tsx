@@ -13,7 +13,7 @@ import {
 import { Validation } from '@/presentation/protocols/validation'
 import { FormEvent, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import styles from './signup-styles.scss'
 
 export type Props = {
@@ -22,6 +22,8 @@ export type Props = {
 }
 
 const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const resetSignUpState = useResetRecoilState(signUpState)
+
   const { setCurrentAccount } = useRecoilValue(currentAccountState)
 
   const [state, setState] = useRecoilState(signUpState)
@@ -46,6 +48,7 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
     }))
   }
 
+  useEffect(() => resetSignUpState, [])
   useEffect(() => validate('name'), [state.name])
   useEffect(() => validate('email'), [state.email])
   useEffect(() => validate('password'), [state.password])
