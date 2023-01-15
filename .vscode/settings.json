@@ -3,6 +3,11 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "cSpell.words": [
     "chainer",
-    "signup"
+    "favicons",
+    "lcov",
+    "localstorage",
+    "paren",
+    "signup",
+    "testid"
   ]
 }
