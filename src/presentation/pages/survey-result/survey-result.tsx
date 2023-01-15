@@ -52,9 +52,24 @@ const SurveyResult: React.FC<Props> = ({
   }, [state.reload])
 
   const onAnswer = (answer: string): void => {
-    setState((oldState) => ({ ...oldState, isLoading: true }))
+    setState((oldState) => ({
+      ...oldState,
+      surveyResult: null,
+      isLoading: true
+    }))
 
-    saveSurveyResult.save({ answer }).then().catch(handleError)
+    saveSurveyResult
+      .save({ answer })
+      .then(
+        (surveyResult) =>
+          surveyResult &&
+          setState((oldState) => ({
+            ...oldState,
+            isLoading: false,
+            surveyResult
+          }))
+      )
+      .catch(handleError)
   }
 
   const reload = (): void => {
