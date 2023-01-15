@@ -296,7 +296,7 @@ describe('SurveyResult Component', () => {
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument()
   })
 
-  test.only('Should prevent multiple answer click', async () => {
+  test('Should prevent multiple answer click', async () => {
     const { saveSurveyResultSpy } = makeSut()
 
     await waitFor(async () => {
