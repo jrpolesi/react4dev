@@ -52,6 +52,8 @@ const SurveyResult: React.FC<Props> = ({
   }, [state.reload])
 
   const onAnswer = (answer: string): void => {
+    if (state.isLoading) return
+
     setState((oldState) => ({
       ...oldState,
       surveyResult: null,
